@@ -1,7 +1,7 @@
 package br.com.generic.dao.type;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
+import java.lang.reflect.ParameterizedType;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -14,21 +14,15 @@ import javax.persistence.criteria.Root;
 
 import br.com.generic.dao.Parameter;
 import br.com.generic.dao.exception.PredicateInvalidException;
+import br.com.generic.dao.rules.NotEqualRole;
 
 
 public enum Predicates {
 	NOT_EQUAL("!=") {
-		@SuppressWarnings("rawtypes")
 		@Override
 		public <T> Predicate getPredicate(CriteriaBuilder builder,
 				Root<T> root, Parameter parameter) {
-			String property = parameter.getProperty();
-			Path<T> path = this.<T>getPath(root, property);
-			Field field = getField(property, getLastProperty(property));
-			if((annotedEntity(field.getType()) || isCollectionEntity(field)) && this.<T>responderJoin(path)){
-				return builder.notEqual(((Join)path).join(getLastProperty(property)), parameter.getValue());
-			}
-			return builder.notEqual(path.get(getLastProperty(property)), parameter.getValue());
+			return notEqualRole.getPredicate(builder, root, parameter);
 		}
 	},
 	
@@ -64,17 +58,20 @@ public enum Predicates {
 		}
 	},
 	
-	/*IN("><") {
+	IN("><") {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		public <T> Predicate getPredicate(CriteriaBuilder builder, Root<T> root, Parameter parameter) {
 			String property = parameter.getProperty();
-			builder.in(this.<T>getPath(root, property));
+			Path<T> path = this.<T>getPath(root, property);
+			Field field = getField(property, getLastProperty(property));
+			if((annotedEntity(field.getType()) || isCollectionEntity(field)) && this.<T>responderJoin(path)){
+				return builder.in(((Join)path).join(getLastProperty(property))).in(parameter.getValue());
+			}
 			
-			return builder.greaterThan(this.<T>getPath(root, property)
-					.<Comparable>get(getLastProperty(property)), (Comparable) parameter.getValue());
+			return builder.in(((Join)path).get(getLastProperty(property))).in(parameter.getValue());
 		}
-	},*/
+	},
 	
 	GREATER_THAN(">") {
 		@Override
@@ -138,6 +135,7 @@ public enum Predicates {
 	
 	private String value;
 	private Class<?> entityClass;
+	NotEqualRole notEqualRole;
 	
 	private Predicates(String value){
 		this.value = value;
@@ -180,12 +178,8 @@ public enum Predicates {
 	}
 	
 	protected boolean isCollectionEntity(Field field){
-		if(implementsCollection(field.getClass())){
-			return field.isAnnotationPresent(OneToMany.class) || 
-					field.isAnnotationPresent(ManyToMany.class);
-		}
-		
-		return false;
+		return field.isAnnotationPresent(OneToMany.class) || 
+				field.isAnnotationPresent(ManyToMany.class);
 	}
 	
 	protected <T> boolean responderJoin(Path<T> path){
@@ -199,19 +193,25 @@ public enum Predicates {
 		Class<?> clazz = entityClass;
 		for(int i = 0 ; i < ropertys.length ; i++){
 			do{
-				field = getField(clazz, node);
+				field = getField(clazz, ropertys[i]);
 				if(field == null)
 					clazz = clazz.getSuperclass();
 			}while (field == null && !clazz.equals(Object.class));
 			
-			if(field != null){
+			if(field != null && field.getName().equals(node)){
 				return field;
+			}else if(field != null){
+				if(isCollectionEntity(field)){
+			        clazz = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+				}else{
+					clazz = field.getType();
+				}
 			}
 		}
 		return null;
 	}
 	
-	private boolean implementsCollection(Class<?> clazz){
+	/*private boolean implementsCollection(Class<?> clazz){
 		do{
 			for(Class<?> inter : clazz.getInterfaces()){
 				if(inter.equals(Collection.class)){
@@ -222,7 +222,7 @@ public enum Predicates {
 		}while(!clazz.equals(Object.class));
 		
 		return false;
-	}
+	}*/
 	
 	private Field getField(Class<?> entityClass, String fieldName){
 		Field fieldReturn = null;;
@@ -270,6 +270,7 @@ public enum Predicates {
 
 	public void setEntityClass(Class<?> entityClass) {
 		this.entityClass = entityClass;
+		notEqualRole = new NotEqualRole(entityClass);
 	}
 	
 	

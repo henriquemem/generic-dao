@@ -14,7 +14,7 @@ public class ListEntitiesTest extends BaseTest {
 
 	
 	
-	@Test
+	/*@Test
 	public void listEntitiesLike(){
 		popularBanco();
 		List<Usuario> list = usuarioDAO.listEntities()
@@ -81,15 +81,24 @@ public class ListEntitiesTest extends BaseTest {
 	@Test
 	public void listEntitiesSub1(){
 		popularBanco();
-		/*Usuario usuario = usuarioDAO.searchEntity()
+		Usuario usuario = usuarioDAO.searchEntity()
 				.by("login+", "test%")
 				.by("email.email", "1@gmail.com")
-				.search();*/
+				.search();
 		
 		List<Usuario> list = usuarioDAO.listEntities()
 				.by("fucionario.privilegios.descricao", "pri1")
 				.list();
 		System.out.println(list.size());
+	}*/
+	
+	@Test
+	public void test(){
+		Order o1 = Order.ASC;
+		Order o2 = Order.ASC;
+		
+		assertEquals(o1, o2);
+		System.out.println( o1 == o2);
 	}
 
 }

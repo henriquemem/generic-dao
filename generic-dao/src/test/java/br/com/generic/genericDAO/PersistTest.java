@@ -23,14 +23,14 @@ public class PersistTest  extends BaseTest{
 		assertEquals("master", usuario.getNivel());
 	}
 	
-	@Test
+	/*@Test
 	public void deletTest(){
 		popularBanco();
 		Usuario usuario = usuarioDAO.findEntityById(1);
 		usuario = usuarioDAO.delete(usuario);
 		usuario = usuarioDAO.findEntityById(1);
 		assertNull(usuario);
-	}
+	}*/
 	
 	
 
