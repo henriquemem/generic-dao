@@ -13,8 +13,7 @@ public class SearchEntityTest extends BaseTest {
 	public void searchEntityTest(){
 		popularBanco();
 		Usuario usuario = usuarioDAO.searchEntity()
-				.by("login+", "test%")
-				.by("email.email", "1@gmail.com")
+				.equal("login", "test1")
 				.search();
 		
 		assertNotNull(usuario);

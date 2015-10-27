@@ -14,8 +14,8 @@ public class ListPropertiesTest extends BaseTest {
 	public void listPropertiesGenericOn(){
 		popularBanco();
 		List<String> list = usuarioDAO.<String>listProperties("login")
-				.by("login+", "test%")
-				.by("email.email", "1@gmail.com")
+				.like("login", "test%")
+				.equal("email.email", "1@gmail.com")
 				.list();
 		assertEquals(1, list.size());
 	}
@@ -25,8 +25,8 @@ public class ListPropertiesTest extends BaseTest {
 	public void listPropertiesGenericOff(){
 		popularBanco();
 		List<String> list = (List) usuarioDAO.listProperties("login")
-				.by("login+", "test%")
-				.by("email.email", "1@gmail.com")
+				.like("login", "test%")
+				.equal("email.email", "1@gmail.com")
 				.list();
 		assertEquals(1, list.size());
 		assertEquals(String.class, list.get(0).getClass());

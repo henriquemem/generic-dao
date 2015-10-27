@@ -1,39 +1,21 @@
 package br.com.generic.dao.rules;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import br.com.generic.dao.Parameter;
-import br.com.generic.dao.exception.PredicateInvalidException;
-
-public abstract class RuleBase {
+public abstract class BaseRule implements Rule{
 	
-	private Class<?> entityClass;
-	
-	public RuleBase(Class<?> entityClass){
-		this.entityClass = entityClass;
-	}
-	
-	public abstract <T> Predicate getPredicate(CriteriaBuilder builder, Root<T> root, Parameter parameter);
-	
-	protected void validateComparable(Parameter parameter){
-		if(!(parameter.getValue() instanceof Comparable)) {
-			throw new PredicateInvalidException("the attribute "+ parameter.getProperty() 
-					+" must implement java.lang.Comparable to use " + parameter.getPredicates().getValue() + ".");
-		}
-	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected <T> Path<T> getPath(Root<T> root, String properties){
+	protected <T> Path<T> getPath(Class<?> entityClass, Root<T> root, String properties){
 		
 		if(properties.contains(".")){
 			String[] ropertys =  properties.split("\\.");
@@ -41,7 +23,7 @@ public abstract class RuleBase {
 			Path<T> path = root;
 			Field field;
 			for(int i = 0 ; i < (ropertys.length - 1) ; i++){
-				field = getField(properties, ropertys[i]);
+				field = getField(entityClass, properties, ropertys[i]);
 				if(this.<T>responderJoin(path)){
 					if(annotedEntity(field.getType()) || isCollectionEntity(field)){
 						if(path instanceof Join)
@@ -62,7 +44,7 @@ public abstract class RuleBase {
 		}
 	}
 	
-	protected Field getField(String properties, String node){
+	protected Field getField(Class<?> entityClass, String properties, String node){
 		String[] ropertys =  properties.split("\\.");
 		Field field;
 		Class<?> clazz = entityClass;
@@ -115,6 +97,37 @@ public abstract class RuleBase {
 				field.isAnnotationPresent(ManyToMany.class);
 	}
 	
+	protected boolean isCollectionGetEntity(Class<?> entityClass, Field field){
+		Method method = getGeterMethod(entityClass, field);
+		if(method != null && 
+				(field.isAnnotationPresent(OneToMany.class) || 
+				field.isAnnotationPresent(ManyToMany.class))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	
+	
+	protected Method getGeterMethod(Class<?> entityClass, Field field){
+		Method methodReturn = null;;
+		
+		for(Method method : entityClass.getMethods()){
+			if(method.getName().replace("get", "").toLowerCase().equals(field.getName().toLowerCase())){
+				 methodReturn = method;
+			}
+		}
+		
+		if(methodReturn != null){
+			return methodReturn;
+		}else if(!entityClass.getSuperclass().equals(Object.class)){
+			return getGeterMethod(entityClass.getSuperclass(), field);
+		}else{
+			return null;
+		}
+	}
+	
 	protected String getLastProperty(String property){
 		if(property.contains(".")){
 			return property.substring(property.lastIndexOf(".") + 1);
@@ -122,22 +135,6 @@ public abstract class RuleBase {
 			return property;
 		}
 	}
-	
-	
-	protected void validateString(Parameter parameter){
-		if(!(parameter.getValue() instanceof String)) {
-			throw new PredicateInvalidException("the attribute "+ 
-					parameter.getProperty() +" must implement comparable to use LIKE.");
-		}
-	}
 
-	public Class<?> getEntityClass() {
-		return this.entityClass;
-	}
 
-	public void setEntityClass(Class<?> entityClass) {
-		this.entityClass = entityClass;
-	}
-	
-	
 }

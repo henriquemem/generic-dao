@@ -1,23 +1,18 @@
 package br.com.generic.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
-import br.com.generic.dao.type.Predicates;
-
 import com.mchange.util.DuplicateElementException;
 
-public class WhereBuild<T, Q> {
+public class WhereBuild<T, Q> extends BaseWhereBuild< WhereBuild<T, Q>>{
 	private EntityManager manager;
-	private List<Parameter> parameters = new ArrayList<Parameter>();
 	private final Class<Q> queryClass;
 	private final Class<T> fromClass;
 	private String field;
@@ -28,16 +23,7 @@ public class WhereBuild<T, Q> {
 		this.manager = manager;
 	}
 	
-	public WhereBuild<T, Q> by(String arg0, Object value){
-		Parameter parameter = new Parameter();
-		Predicates predicate = getPredicate(arg0.trim());
-		predicate.setEntityClass(fromClass);
-		parameter.setProperty( arg0.replace(predicate.getValue(), "").trim());
-		parameter.setPredicates(predicate);
-		parameter.setValue(value);
-		parameters.add(parameter);
-		return this;	
-	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public Q search(){
@@ -71,32 +57,16 @@ public class WhereBuild<T, Q> {
 		}
 	}
 	
-	private Predicates getPredicate(String property){
-		for(Predicates predicate : Predicates.values()){
-			if(property.contains(predicate.getValue())){
-				return predicate;
-			}
-		}
-		return Predicates.EQUAL;
-	}
-
-	List<Parameter> getParameters() {
-		return parameters;
-	}
-
-	
-	Predicate[] mountWhere(CriteriaBuilder builder, Root<T> root, List<Parameter> parameters){
-		Predicate[] predicates = new Predicate[parameters.size()];
-		
-		for(int i = 0; i < parameters.size(); i++){
-			predicates[i] = parameters.get(i).getPredicates().getPredicate(builder, root, parameters.get(i));
-		}
-		
-		return predicates;
-	}
 	
 	void setField(String field) {
 		this.field = field;
+	}
+
+
+
+	@Override
+	Class<?> getFromClass() {
+		return fromClass;
 	}
 
 }

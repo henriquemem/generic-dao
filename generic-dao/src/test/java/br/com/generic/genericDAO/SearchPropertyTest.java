@@ -12,8 +12,8 @@ public class SearchPropertyTest extends BaseTest {
 	public void searchPropertyGenericOn(){
 		popularBanco();
 		String login = usuarioDAO.<String>searchProperty("login")
-				.by("login+", "test%")
-				.by("email.email", "1@gmail.com")
+				.like("login", "test%")
+				.equal("email.email", "1@gmail.com")
 				.search();
 		
 		assertNotNull(login);
@@ -23,8 +23,8 @@ public class SearchPropertyTest extends BaseTest {
 	public void searchPropertyGenericOff(){
 		popularBanco();
 		String login = (String) usuarioDAO.searchProperty("login")
-				.by("login+", "test%")
-				.by("email.email", "1@gmail.com")
+				.like("login", "test%")
+				.equal("email.email", "1@gmail.com")
 				.search();
 		
 		assertNotNull(login);

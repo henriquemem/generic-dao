@@ -15,7 +15,7 @@ public class PredicatesTest extends BaseTest {
 	public void noEqual(){
 		popularBanco();
 		List<Usuario> list = usuarioDAO.listEntities()
-				.by("login!=", "test1")
+				.notEqual("login", "test1")
 				.list();
 		assertEquals(99, list.size());
 	}
@@ -24,7 +24,7 @@ public class PredicatesTest extends BaseTest {
 	public void greaterThanOrEqualTo(){
 		popularBanco();
 		List<Usuario> list = usuarioDAO.listEntities()
-				.by("id>=", 2)
+				.greaterThanOrEqualTo("id", 2)
 				.list();
 		assertEquals(99, list.size());
 	}
@@ -33,7 +33,7 @@ public class PredicatesTest extends BaseTest {
 	public void lessThanOrEqualTo(){
 		popularBanco();
 		List<Usuario> list = usuarioDAO.listEntities()
-				.by("id<=", 99)
+				.lessThanOrEqualTo("id", 99)
 				.list();
 		assertEquals(99, list.size());
 	}
@@ -42,7 +42,7 @@ public class PredicatesTest extends BaseTest {
 	public void greaterThan(){
 		popularBanco();
 		List<Usuario> list = usuarioDAO.listEntities()
-				.by("id>", 1)
+				.greaterThan("id", 1)
 				.list();
 		assertEquals(99, list.size());
 	}
@@ -51,7 +51,7 @@ public class PredicatesTest extends BaseTest {
 	public void lessThan(){
 		popularBanco();
 		List<Usuario> list = usuarioDAO.listEntities()
-				.by("id<", 100)
+				.lessThan("id", 100)
 				.list();
 		assertEquals(99, list.size());
 	}
@@ -60,7 +60,7 @@ public class PredicatesTest extends BaseTest {
 	public void equal(){
 		popularBanco();
 		Usuario usuario = usuarioDAO.searchEntity()
-				.by("login", "test1")
+				.equal("login", "test1")
 				.search();
 		
 		assertNotNull(usuario);
@@ -70,7 +70,7 @@ public class PredicatesTest extends BaseTest {
 	public void like(){
 		popularBanco();
 		Usuario usuario = usuarioDAO.searchEntity()
-				.by("email.email+", "11%")
+				.like("email.email", "11%")
 				.search();
 		
 		assertNotNull(usuario);

@@ -11,13 +11,12 @@ import javax.persistence.criteria.Selection;
 
 import br.com.generic.dao.type.Order;
 
-public class WhereListBuild<T, Q>{
+public class WhereListBuild<T, Q> extends BaseWhereBuild<WhereListBuild<T, Q>>{
 
 	private Integer start;
 	private Integer end;
 	private Order order;
 	private String propertyOrder;
-	private WhereBuild<T, Q> whereBuild;
 	private final Class<Q> queryClass;
 	private final Class<T> fromClass;
 	private EntityManager manager;
@@ -27,7 +26,6 @@ public class WhereListBuild<T, Q>{
 		this.fromClass = fromClass;
 		this.queryClass = queryClass;
 		this.manager = manager;
-		this.whereBuild = new WhereBuild<T, Q>(manager,fromClass, queryClass);
 	}
 	
 	public WhereListBuild<T, Q> startWith(Integer start){
@@ -51,11 +49,6 @@ public class WhereListBuild<T, Q>{
 		return this;
 	}
 	
-	public WhereListBuild<T, Q> by(String arg0, Object value){
-		whereBuild.by(arg0, value);
-		return this;
-	}
-	
 	@SuppressWarnings("unchecked")
 	public List<Q> list(){
 		CriteriaBuilder builder = manager.getCriteriaBuilder() ;
@@ -63,8 +56,8 @@ public class WhereListBuild<T, Q>{
 		Root<T> root = criteriaQuery.from(fromClass);
 		
 		criteriaQuery = criteriaQuery.select((Selection<? extends Q>) root) ;
-		if(!whereBuild.getParameters().isEmpty())
-			criteriaQuery = criteriaQuery.where(whereBuild.mountWhere(builder, root, whereBuild.getParameters()));
+		if(!getParameters().isEmpty())
+			criteriaQuery = criteriaQuery.where(mountWhere(builder, root, getParameters()));
 		
 		if(order != null){
 			if(order.equals(Order.ASC)){
@@ -90,6 +83,11 @@ public class WhereListBuild<T, Q>{
 
 	void setField(String field) {
 		this.field = field;
+	}
+
+	@Override
+	Class<?> getFromClass() {
+		return fromClass;
 	}
 	
 	

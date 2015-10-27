@@ -10,23 +10,19 @@ import javax.persistence.criteria.Root;
 
 import br.com.generic.dao.Parameter;
 
-public class NotEqualRole extends RuleBase{
+public class InRule extends BaseRule {
 
-	public NotEqualRole(Class<?> entityClass) {
-		super(entityClass);
-	}
-
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public <T> Predicate getPredicate(CriteriaBuilder builder, Root<T> root,
+	public <T> Predicate getPredicate(Class<?> entityClass, CriteriaBuilder builder, Root<T> root,
 			Parameter parameter) {
 		String property = parameter.getProperty();
-		Path<T> path = this.<T>getPath(root, property);
-		Field field = getField(property, getLastProperty(property));
+		Path<T> path = this.<T>getPath(entityClass, root, property);
+		Field field = getField(entityClass, property, getLastProperty(property));
 		if((annotedEntity(field.getType()) || isCollectionEntity(field)) && this.<T>responderJoin(path)){
-			return builder.notEqual(((Join)path).join(getLastProperty(property)), parameter.getValue());
+			return builder.in(((Join)path).join(getLastProperty(property))).in(parameter.getValue());
 		}
-		return builder.notEqual(path.get(getLastProperty(property)), parameter.getValue());
+		return builder.in(((Join)path).get(getLastProperty(property))).in(parameter.getValue());
 	}
 
 }
