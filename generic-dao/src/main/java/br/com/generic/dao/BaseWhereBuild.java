@@ -94,6 +94,35 @@ abstract class BaseWhereBuild<T extends BaseWhereBuild<?>> {
 		return (T) this;	
 	}
 	
+	@SuppressWarnings("unchecked")
+	public T isNull(String arg0){
+		Parameter parameter = new Parameter();
+		parameter.setProperty(arg0);
+		parameter.setPredicates(Predicates.IS_NULL);
+		parameters.add(parameter);
+		return (T) this;	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public T isNotNull(String arg0){
+		Parameter parameter = new Parameter();
+		parameter.setProperty(arg0);
+		parameter.setPredicates(Predicates.IS_NOT_NULL);
+		parameters.add(parameter);
+		return (T) this;	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public T between(String arg0, Comparable<?> value1, Comparable<?> value2){
+		Parameter parameter = new Parameter();
+		parameter.setProperty(arg0);
+		Comparable<?>[] values = {value1, value2};
+		parameter.setValue(values);
+		parameter.setPredicates(Predicates.BETWEEN);
+		parameters.add(parameter);
+		return (T) this;	
+	}
+	
 	Predicate[] mountWhere(CriteriaBuilder builder, Root<?> root, List<Parameter> parameters){
 		Predicate[] predicates = new Predicate[parameters.size()];
 		

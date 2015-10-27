@@ -1,22 +1,25 @@
 package br.com.generic.genericDAO;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.com.generic.WeldJUnit4Runner;
 import br.com.generic.dao.type.Order;
+import br.com.generic.entity.Usuario;
 
 @RunWith(WeldJUnit4Runner.class)
 public class ListEntitiesTest extends BaseTest {
 
 	
 	
-	/*@Test
+	@Test
 	public void listEntitiesLike(){
 		popularBanco();
 		List<Usuario> list = usuarioDAO.listEntities()
-				.by("login+", "test%")
-				.by("email.email", "1@gmail.com")
+				.like("login", "test%")
+				.equal("email.email", "1@gmail.com")
 				.list();
 		assertEquals(1, list.size());
 	}
@@ -70,7 +73,7 @@ public class ListEntitiesTest extends BaseTest {
 	public void listEntitiesSub(){
 		popularBanco();
 		List<Usuario> list = usuarioDAO.listEntities()
-				.by("privilegios.descricao", "pri1")
+				.equal("privilegios.descricao", "pri1")
 				.list();
 		System.out.println(list.size());
 	}
@@ -78,24 +81,15 @@ public class ListEntitiesTest extends BaseTest {
 	@Test
 	public void listEntitiesSub1(){
 		popularBanco();
-		Usuario usuario = usuarioDAO.searchEntity()
-				.by("login+", "test%")
-				.by("email.email", "1@gmail.com")
-				.search();
+		/*Usuario usuario = usuarioDAO.searchEntity()
+				.like("login", "test%")
+				.equal("email.email", "1@gmail.com")
+				.search();*/
 		
 		List<Usuario> list = usuarioDAO.listEntities()
-				.by("fucionario.privilegios.descricao", "pri1")
+				.equal("fucionario.privilegios.descricao", "pri1")
 				.list();
 		System.out.println(list.size());
-	}*/
-	
-	@Test
-	public void test(){
-		Order o1 = Order.ASC;
-		Order o2 = Order.ASC;
-		
-		assertEquals(o1, o2);
-		System.out.println( o1 == o2);
 	}
-
+	
 }

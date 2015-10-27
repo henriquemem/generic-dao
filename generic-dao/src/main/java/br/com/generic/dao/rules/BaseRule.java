@@ -11,6 +11,8 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
+import br.com.generic.exceptions.BaseRuntimeException;
+
 public abstract class BaseRule implements Rule{
 	
 	
@@ -80,16 +82,14 @@ public abstract class BaseRule implements Rule{
 		try {
 			fieldReturn = entityClass.getDeclaredField(fieldName);
 		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
 		} catch (SecurityException e) {
-			e.printStackTrace();
 		}
 		if(fieldReturn != null){
 			return fieldReturn;
 		}else if(!entityClass.getSuperclass().equals(Object.class)){
 			return getField(entityClass.getSuperclass(), fieldName);
 		}else{
-			return null;
+			throw new BaseRuntimeException(fieldName + " not found in " + entityClass);
 		}
 	}
 	protected boolean isCollectionEntity(Field field){

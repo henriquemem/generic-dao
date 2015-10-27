@@ -5,10 +5,13 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import br.com.generic.dao.Parameter;
+import br.com.generic.dao.rules.BetweenRule;
 import br.com.generic.dao.rules.EqualRule;
 import br.com.generic.dao.rules.GreaterThanOrEqualToRule;
 import br.com.generic.dao.rules.GreaterThanRule;
 import br.com.generic.dao.rules.InRule;
+import br.com.generic.dao.rules.IsNotNullRule;
+import br.com.generic.dao.rules.IsNullRule;
 import br.com.generic.dao.rules.LessThanOrEqualToRule;
 import br.com.generic.dao.rules.LessThanRule;
 import br.com.generic.dao.rules.LikeRule;
@@ -72,12 +75,35 @@ public enum Predicates implements Rule{
 		}
 	},
 	
-	//sempre colocar esse por ultimo
 	EQUAL {
 		@Override
 		public <T> Predicate getPredicate(Class<?> entityClass, CriteriaBuilder builder,
 				Root<T> root, Parameter parameter) {
 			return equalRule.getPredicate(entityClass, builder, root, parameter);
+		}
+	},
+	
+	IS_NULL {
+		@Override
+		public <T> Predicate getPredicate(Class<?> entityClass, CriteriaBuilder builder,
+				Root<T> root, Parameter parameter) {
+			return isNullRule.getPredicate(entityClass, builder, root, parameter);
+		}
+	},
+	
+	IS_NOT_NULL {
+		@Override
+		public <T> Predicate getPredicate(Class<?> entityClass, CriteriaBuilder builder,
+				Root<T> root, Parameter parameter) {
+			return isNotNullRule.getPredicate(entityClass, builder, root, parameter);
+		}
+	},
+	
+	BETWEEN {
+		@Override
+		public <T> Predicate getPredicate(Class<?> entityClass, CriteriaBuilder builder,
+				Root<T> root, Parameter parameter) {
+			return betweenRule.getPredicate(entityClass, builder, root, parameter);
 		}
 	};
 	
@@ -90,6 +116,8 @@ public enum Predicates implements Rule{
 	protected Rule lessThanRule = new LessThanRule();
 	protected Rule likeRule = new LikeRule();
 	protected Rule equalRule = new EqualRule();
-	
+	protected Rule isNullRule = new IsNullRule();
+	protected Rule isNotNullRule = new IsNotNullRule();
+	protected Rule betweenRule = new BetweenRule();
 	
 }
