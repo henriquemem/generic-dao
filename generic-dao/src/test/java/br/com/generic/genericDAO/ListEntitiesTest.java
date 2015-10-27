@@ -1,13 +1,10 @@
 package br.com.generic.genericDAO;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.com.generic.WeldJUnit4Runner;
 import br.com.generic.dao.type.Order;
-import br.com.generic.entity.Usuario;
 
 @RunWith(WeldJUnit4Runner.class)
 public class ListEntitiesTest extends BaseTest {

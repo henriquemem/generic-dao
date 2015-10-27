@@ -18,7 +18,6 @@ import br.com.generic.entity.Email;
 import br.com.generic.entity.Funcionario;
 import br.com.generic.entity.Privilegio;
 import br.com.generic.entity.Usuario;
-import br.com.generic.entity.UsuarioBase;
 import junit.framework.TestCase;
 
 @Ignore
