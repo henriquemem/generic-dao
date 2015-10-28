@@ -55,6 +55,16 @@ abstract class BaseWhereBuild<T extends BaseWhereBuild<?>> {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public T in(String arg0, Object... value){
+		Parameter parameter = new Parameter();
+		parameter.setProperty(arg0);
+		parameter.setPredicates(Predicates.IN);
+		parameter.setValue(value);
+		parameters.add(parameter);
+		return (T) this;	
+	}
+	
+	@SuppressWarnings("unchecked")
 	public T lessThanOrEqualTo(String arg0, Comparable<?> value){
 		Parameter parameter = new Parameter();
 		parameter.setProperty(arg0);
