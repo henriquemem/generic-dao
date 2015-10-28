@@ -34,7 +34,7 @@ public class WhereBuild<T, Q> extends BaseWhereBuild< WhereBuild<T, Q>>{
 		criteriaQuery = criteriaQuery.select((Selection<? extends Q>) root) ;
 		
 		if(!getParameters().isEmpty())
-			criteriaQuery = criteriaQuery.where(mountWhere(builder, root, getParameters()));
+			criteriaQuery = criteriaQuery.where(getPredicate(builder, root, getParameters()));
 		
 		if(field != null)
 			criteriaQuery = criteriaQuery.select(root.<Q>get(field));

@@ -35,4 +35,11 @@ public class ListTest extends BaseTest{
 		assertEquals(51, list.get(0).getId());
 		assertEquals(100, list.get(49).getId());
 	}
+	
+	@Test
+	public void listTestW(){
+		popularBanco();
+		List<Usuario> list = usuarioDAO.listEntities().list();
+		assertEquals(100, list.size());
+	}
 }

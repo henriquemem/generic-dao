@@ -16,6 +16,7 @@ import br.com.generic.dao.rules.LessThanOrEqualToRule;
 import br.com.generic.dao.rules.LessThanRule;
 import br.com.generic.dao.rules.LikeRule;
 import br.com.generic.dao.rules.NotEqualRule;
+import br.com.generic.dao.rules.NotLikeRule;
 import br.com.generic.dao.rules.Rule;
 
 
@@ -75,6 +76,14 @@ public enum Predicates implements Rule{
 		}
 	},
 	
+	NOT_LIKE {
+		@Override
+		public <T> Predicate getPredicate(Class<?> entityClass, CriteriaBuilder builder,
+				Root<T> root, Parameter parameter) {
+			return notLikeRule.getPredicate(entityClass, builder, root, parameter);
+		}
+	},
+	
 	EQUAL {
 		@Override
 		public <T> Predicate getPredicate(Class<?> entityClass, CriteriaBuilder builder,
@@ -119,5 +128,6 @@ public enum Predicates implements Rule{
 	protected Rule isNullRule = new IsNullRule();
 	protected Rule isNotNullRule = new IsNotNullRule();
 	protected Rule betweenRule = new BetweenRule();
+	protected Rule notLikeRule = new NotLikeRule();
 	
 }
