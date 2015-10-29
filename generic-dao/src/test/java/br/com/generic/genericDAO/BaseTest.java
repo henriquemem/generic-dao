@@ -7,6 +7,8 @@ import java.util.Random;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import junit.framework.TestCase;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -18,7 +20,6 @@ import br.com.generic.entity.Email;
 import br.com.generic.entity.Funcionario;
 import br.com.generic.entity.Privilegio;
 import br.com.generic.entity.Usuario;
-import junit.framework.TestCase;
 
 @Ignore
 public class BaseTest extends TestCase{
@@ -87,4 +88,7 @@ public class BaseTest extends TestCase{
 		}
         return list;
 	}
+	
+	//Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    //validator.validate(null);
 }

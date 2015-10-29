@@ -15,7 +15,7 @@ import javax.persistence.Version;
 @MappedSuperclass
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="FROM_CLASS", discriminatorType=DiscriminatorType.STRING)
-public abstract class EntityId implements Serializable{
+public abstract class EntityId<T> implements Serializable{
 	
 
 	private static final long serialVersionUID = -1842377326317111427L;
@@ -38,16 +38,13 @@ public abstract class EntityId implements Serializable{
 		return version;
 	}
 
-	@PrePersist
-	public void peristente(){
-		System.out.println("Entity super");
-	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + (int) (this.id ^ (this.id >>> 32));
+		result = prime * result + this.version;
 		return result;
 	}
 
@@ -59,11 +56,15 @@ public abstract class EntityId implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EntityId other = (EntityId) obj;
-		if (id != other.id)
+		EntityId<?> other = (EntityId<?>) obj;
+		if (this.id != other.id)
+			return false;
+		if (this.version != other.version)
 			return false;
 		return true;
 	}
+
+	
 	
 	
 }
