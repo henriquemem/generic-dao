@@ -6,14 +6,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
 import br.com.generic.dao.type.Order;
 
-abstract class BaseWhereListBuild<T, Q, B extends BaseWhereListBuild<T, Q, B>> 
+abstract class BaseWhereListBuilder<T, Q, B extends BaseWhereListBuilder<T, Q, B>> 
 	extends 
-		BaseWhereBuild<B>{
+		BaseWhereBuilder<B>{
 
 	private Integer start;
 	private Integer end;
@@ -24,7 +25,7 @@ abstract class BaseWhereListBuild<T, Q, B extends BaseWhereListBuild<T, Q, B>>
 	private EntityManager manager;
 	private String field;
 	
-	BaseWhereListBuild(EntityManager manager, Class<T> fromClass, Class<Q> queryClass) {
+	BaseWhereListBuilder(EntityManager manager, Class<T> fromClass, Class<Q> queryClass) {
 		this.fromClass = fromClass;
 		this.queryClass = queryClass;
 		this.manager = manager;
@@ -63,7 +64,10 @@ abstract class BaseWhereListBuild<T, Q, B extends BaseWhereListBuild<T, Q, B>>
 		
 		criteriaQuery = criteriaQuery.select((Selection<? extends Q>) root) ;
 		
-		criteriaQuery = criteriaQuery.where(getPredicate(builder, root, getParameters()));
+		Predicate predicate = getPredicate(builder, root);
+		if(predicate != null){
+			criteriaQuery = criteriaQuery.where(predicate);
+		}
 		
 		if(order != null){
 			if(order.equals(Order.ASC)){

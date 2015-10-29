@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.com.generic.WeldJUnit4Runner;
-import br.com.generic.dao.WhereEntityListBuild;
+import br.com.generic.dao.WhereEntityListBuilder;
 import br.com.generic.entity.Usuario;
 
 @RunWith(WeldJUnit4Runner.class)
@@ -15,11 +15,18 @@ public class OrTest extends BaseTest {
 	@Test
 	public void listTestW(){
 		popularBanco();
-		WhereEntityListBuild<Usuario> entityListBuild = usuarioDAO.listEntities()
-				.notLike("login", "%1%");
+	
+		
+		WhereEntityListBuilder<Usuario> entityListBuild2 = usuarioDAO.listEntities()
+				.like("login", "%1%");
+		
+		WhereEntityListBuilder<Usuario> entityListBuild3 = usuarioDAO.listEntities()
+				.equal("login", "test87");
+		
 		List<Usuario> list = usuarioDAO.listEntities()
-				.or(entityListBuild)
+				.and(entityListBuild2)
+				.or(entityListBuild3)
 				.list();
-		assertEquals(100, list.size());
+		assertEquals(21, list.size());
 	}
 }

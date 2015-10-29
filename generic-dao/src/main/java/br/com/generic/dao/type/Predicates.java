@@ -10,6 +10,8 @@ import br.com.generic.dao.rules.EqualRule;
 import br.com.generic.dao.rules.GreaterThanOrEqualToRule;
 import br.com.generic.dao.rules.GreaterThanRule;
 import br.com.generic.dao.rules.InRule;
+import br.com.generic.dao.rules.IsMemberRule;
+import br.com.generic.dao.rules.IsNotMember;
 import br.com.generic.dao.rules.IsNotNullRule;
 import br.com.generic.dao.rules.IsNullRule;
 import br.com.generic.dao.rules.LessThanOrEqualToRule;
@@ -114,6 +116,22 @@ public enum Predicates implements Rule{
 				Root<T> root, Parameter parameter) {
 			return betweenRule.getPredicate(entityClass, builder, root, parameter);
 		}
+	},
+	
+	IS_MEMBER {
+		@Override
+		public <T> Predicate getPredicate(Class<?> entityClass, CriteriaBuilder builder,
+				Root<T> root, Parameter parameter) {
+			return isMemberRule.getPredicate(entityClass, builder, root, parameter);
+		}
+	},
+	
+	IS_NOT_MEMBER {
+		@Override
+		public <T> Predicate getPredicate(Class<?> entityClass, CriteriaBuilder builder,
+				Root<T> root, Parameter parameter) {
+			return isNotMemberRule.getPredicate(entityClass, builder, root, parameter);
+		}
 	};
 	
 	
@@ -129,5 +147,7 @@ public enum Predicates implements Rule{
 	protected Rule isNotNullRule = new IsNotNullRule();
 	protected Rule betweenRule = new BetweenRule();
 	protected Rule notLikeRule = new NotLikeRule();
+	protected Rule isMemberRule = new IsMemberRule();
+	protected Rule isNotMemberRule = new IsNotMember();
 	
 }

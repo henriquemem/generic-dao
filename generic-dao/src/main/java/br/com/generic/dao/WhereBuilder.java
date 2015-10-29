@@ -6,18 +6,19 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
 import com.mchange.util.DuplicateElementException;
 
-public class WhereBuild<T, Q> extends BaseWhereBuild< WhereBuild<T, Q>>{
+public class WhereBuilder<T, Q> extends BaseWhereBuilder< WhereBuilder<T, Q>>{
 	private EntityManager manager;
 	private final Class<Q> queryClass;
 	private final Class<T> fromClass;
 	private String field;
 
-	WhereBuild(EntityManager manager, Class<T> fromClass, Class<Q> queryClass) {
+	WhereBuilder(EntityManager manager, Class<T> fromClass, Class<Q> queryClass) {
 		this.fromClass = fromClass;
 		this.queryClass = queryClass;
 		this.manager = manager;
@@ -33,8 +34,10 @@ public class WhereBuild<T, Q> extends BaseWhereBuild< WhereBuild<T, Q>>{
 		
 		criteriaQuery = criteriaQuery.select((Selection<? extends Q>) root) ;
 		
-		if(!getParameters().isEmpty())
-			criteriaQuery = criteriaQuery.where(getPredicate(builder, root, getParameters()));
+		Predicate predicate = getPredicate(builder, root);
+		if(predicate != null){
+			criteriaQuery = criteriaQuery.where(predicate);
+		}
 		
 		if(field != null)
 			criteriaQuery = criteriaQuery.select(root.<Q>get(field));

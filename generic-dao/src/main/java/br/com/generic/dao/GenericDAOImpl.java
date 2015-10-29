@@ -173,8 +173,8 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 	}
 	
 	@Override
-	public WhereEntityListBuild<T> listEntities() {
-		return new WhereEntityListBuild<T>(manager, entityClass, entityClass);
+	public WhereEntityListBuilder<T> listEntities() {
+		return new WhereEntityListBuilder<T>(manager, entityClass, entityClass);
 	}
 	
 	@Override
@@ -183,30 +183,30 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 	}
 	
 	@Override
-	public WhereEntityBuild<T> searchEntity() {
-		return new WhereEntityBuild<T>(manager, entityClass, entityClass);
+	public WhereEntityBuilder<T> searchEntity() {
+		return new WhereEntityBuilder<T>(manager, entityClass, entityClass);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E> WhereListBuild<T, E> listProperties(String field) {
+	public <E> WhereListBuilder<T, E> listProperties(String field) {
 		ParameterizedType paramType;
         paramType = (ParameterizedType) new Param<E>().getClass().getGenericInterfaces()[0];
         Class<E> parameterClass = (Class<E>) paramType.getActualTypeArguments()[0].getClass();
 
-        WhereListBuild<T, E> whereListBuild = new WhereListBuild<T, E>(manager , entityClass, parameterClass);
+        WhereListBuilder<T, E> whereListBuild = new WhereListBuilder<T, E>(manager , entityClass, parameterClass);
 		whereListBuild.setField(field);
 		return whereListBuild;
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public<E> WhereBuild<T, E> searchProperty(String field) {
+	public<E> WhereBuilder<T, E> searchProperty(String field) {
 		ParameterizedType paramType;
         paramType = (ParameterizedType) new Param<E>().getClass().getGenericInterfaces()[0];
         Class<E> parameterClass = (Class<E>) paramType.getActualTypeArguments()[0].getClass();
 		
-        WhereBuild<T, E> whereBuild = new WhereBuild<>(manager, entityClass, parameterClass);
+        WhereBuilder<T, E> whereBuild = new WhereBuilder<>(manager, entityClass, parameterClass);
         whereBuild.setField(field);
         return whereBuild;
 	}
