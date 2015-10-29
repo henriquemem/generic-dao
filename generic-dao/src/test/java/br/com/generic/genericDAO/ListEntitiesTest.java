@@ -12,8 +12,6 @@ import br.com.generic.entity.Usuario;
 @RunWith(WeldJUnit4Runner.class)
 public class ListEntitiesTest extends BaseTest {
 
-	
-	
 	@Test
 	public void listEntitiesLike(){
 		popularBanco();
@@ -77,7 +75,6 @@ public class ListEntitiesTest extends BaseTest {
 				.list();
 		System.out.println(list.size());
 	}
-	
 	@Test
 	public void listEntitiesSub1(){
 		popularBanco();

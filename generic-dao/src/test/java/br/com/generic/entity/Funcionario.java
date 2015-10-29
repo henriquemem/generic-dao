@@ -35,6 +35,9 @@ public class Funcionario extends EntityId {
 	}
 
 	public void setPrivilegios(List<Privilegio> privilegios) {
+		for(Privilegio p : privilegios){
+			p.setFuncionario(this);
+		}
 		this.privilegios = privilegios;
 	}
 
