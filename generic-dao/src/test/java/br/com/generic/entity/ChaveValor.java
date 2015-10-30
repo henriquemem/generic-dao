@@ -1,14 +1,19 @@
 package br.com.generic.entity;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-
+@MappedSuperclass
 public abstract class ChaveValor<E> extends EntityId<E> {
 	private static final long serialVersionUID = 4111302334454641705L;
 
-	private Integer codigo; // Chave
-	private String nome;    // Valor
+	@Column(name="codigo")
+	private Integer codigo; 
+	@Column(name="nome")
+	private String nome;
+	@Column(name="abreviatura")
 	private String abreviatura;
 
 	public Integer getCodigo() {

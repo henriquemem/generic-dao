@@ -3,16 +3,29 @@ package br.com.generic.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Produto<E extends Produto<?>> extends ChaveValor<E> {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="produto")
+public class Produto extends ChaveValor<Produto> {
 	private static final long serialVersionUID = 4986454563776608370L;
 		
+	@Column(name="quantidade_minima")
 	private Double quantidadeMinima;
+	@Column(name="observacao")
 	private String observacao;
+	@ManyToOne
+	@JoinColumn(name="fabricante_id")
 	private Fabricante fabricante;	
 	
-	
+	@OneToMany
+	@JoinColumn(name="produto_id")
 	private Set<Embalagem> embalagens = new HashSet<Embalagem>();	
-	//private Set<ProdutoArmazem> armazems = new HashSet<ProdutoArmazem>();	
 
 	public Double getQuantidadeMinima() {
 		return quantidadeMinima;

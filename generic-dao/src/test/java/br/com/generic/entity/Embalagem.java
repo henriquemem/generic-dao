@@ -3,25 +3,42 @@ package br.com.generic.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="embalagem")
 public class Embalagem extends EntityId<Embalagem> {
 	private static final long serialVersionUID = -2533440098025652094L;
 
-	private Produto<?> produto;
+	@ManyToOne
+	@JoinColumn(name="produto_id")
+	private Produto produto;
+	@Column(name="nome")
 	private String nome;
+	@Column(name="abreviatura")
 	private String abreviatura;
-	
+	@Column(name="codigo_barras")
 	private String codigoBarras;
 
+	@Column(name="e_embalagem_padrao")
 	private Boolean eEmbalagemPadrao = false;
+	@Column(name="codigo_ms")
 	private String codigoMs;
 	
+	@OneToMany
+	@JoinColumn(name="embalagem_id")
 	private Set<EmbalagemCodigoBarras> codigosBarras;
 	
-	public Produto<?> getProduto() {
+	public Produto getProduto() {
 		return produto;
 	}
 
-	protected void setProduto(Produto<?> produto) {
+	protected void setProduto(Produto produto) {
 		this.produto = produto;
 	}
 

@@ -2,6 +2,7 @@ package br.com.generic.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ public abstract class EntityId<T> implements Serializable{
 	protected long id;
 	
 	@Version
+	@Column(name="versao")
 	private int version;
 
 	public long getId() {
