@@ -1,5 +1,7 @@
 package br.com.generic.genericDAO;
 
+import java.util.Date;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -11,15 +13,19 @@ public class SearchPropertyTest extends BaseTest {
 	@Test
 	public void searchPropertyGenericOn(){
 		popularBanco();
-		String login = usuarioDAO.<String>searchProperty("login")
-				.like("login", "test%")
-				.equal("email.email", "1@gmail.com")
-				.search();
 		
-		assertNotNull(login);
+		Long stat = new Date().getTime();
+		for(int i = 1; i <= 1000; i++){
+			String login = usuarioDAO.<String>searchProperty("login")
+					.like("login", "test%")
+					.equal("email.email", "1@gmail.com")
+					.search();
+		}
+		System.out.println(new Date().getTime() - stat);
+		//assertNotNull(login);
 	}
 	
-	@Test
+	/*@Test
 	public void searchPropertyGenericOff(){
 		popularBanco();
 		String login = (String) usuarioDAO.searchProperty("login")
@@ -28,7 +34,7 @@ public class SearchPropertyTest extends BaseTest {
 				.search();
 		
 		assertNotNull(login);
-	}
+	}*/
 	
 
 }

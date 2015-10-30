@@ -3,6 +3,7 @@ package br.com.generic.genericDAO;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
+import java.beans.MethodDescriptor;
 import java.beans.PropertyDescriptor;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +29,7 @@ public class BeanInfoTest extends BaseTest {
 		PropertyDescriptor[] propertyDescriptors=beanInfo.getPropertyDescriptors();
 		
 		Arrays.asList(propertyDescriptors).forEach((PropertyDescriptor p) -> System.out.println(p.getReadMethod().getName()));
+		
 	}
 	
 	

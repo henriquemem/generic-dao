@@ -11,9 +11,10 @@ public class NotLikeRule extends BaseRule {
 	@Override
 	public <T> Predicate getPredicate(Class<?> entityClass,
 			CriteriaBuilder builder, Root<T> root, Parameter parameter) {
-		String property = parameter.getProperty();
-		return builder.notLike(this.<T>getPath(entityClass, root, property)
-				.<String>get(getLastProperty(property)), (String) parameter.getValue());
+		String lasProperty = getLastProperty(parameter.getProperty());
+		String navigation = getNavigation(parameter.getProperty());
+		return builder.notLike(this.<T>getPath(entityClass, root, navigation)
+				.<String>get(lasProperty), (String) parameter.getValue());
 	}
 
 }

@@ -1,33 +1,41 @@
 package br.com.generic.dao.rules;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import br.com.generic.exceptions.BaseRuntimeException;
 
 public abstract class BaseRule implements Rule{
 	
+	private Map<Class<?>, PropertyDescriptor[]> propertyDescriptorsCache = new HashMap<Class<?>, PropertyDescriptor[]>();
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected <T> Path<T> getPath(Class<?> entityClass, Root<T> root, String properties){
 		
-		if(properties.contains(".")){
+		if(!properties.isEmpty()){
 			String[] ropertys =  properties.split("\\.");
 			
 			Path<T> path = root;
-			Field field;
-			for(int i = 0 ; i < (ropertys.length - 1) ; i++){
-				field = getField(entityClass, properties, ropertys[i]);
+			PropertyDescriptor propertyDescriptor;
+			for(int i = 0 ; i < (ropertys.length) ; i++){
+				propertyDescriptor = getPropertyDescriptor(entityClass, properties, ropertys[i]);
 				if(this.<T>responderJoin(path)){
-					if(annotedEntity(field.getType()) || isCollectionEntity(field)){
+					if(annotedEntity(propertyDescriptor.getReadMethod().getReturnType()) || isCollectionEntity(propertyDescriptor)){
 						if(path instanceof Join)
 							path = ((Join)path).join(ropertys[i]);
 						else
@@ -46,24 +54,21 @@ public abstract class BaseRule implements Rule{
 		}
 	}
 	
-	protected Field getField(Class<?> entityClass, String properties, String node){
+	protected PropertyDescriptor getPropertyDescriptor(Class<?> entityClass, String properties, String node){
 		String[] ropertys =  properties.split("\\.");
+		PropertyDescriptor propertyDescriptor;
 		Field field;
 		Class<?> clazz = entityClass;
 		for(int i = 0 ; i < ropertys.length ; i++){
-			do{
-				field = getField(clazz, ropertys[i]);
-				if(field == null)
-					clazz = clazz.getSuperclass();
-			}while (field == null && !clazz.equals(Object.class));
-			
-			if(field != null && field.getName().equals(node)){
-				return field;
-			}else if(field != null){
-				if(isCollectionEntity(field)){
+			propertyDescriptor = getPropertyDescriptor(clazz, ropertys[i]);
+			if(propertyDescriptor != null && propertyDescriptor.getName().equals(node)){
+				return propertyDescriptor;
+			}else if(propertyDescriptor != null){
+				if(isCollectionEntity(propertyDescriptor)){
+					field = getField(clazz, ropertys[i]);
 			        clazz = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
 				}else{
-					clazz = field.getType();
+					clazz = propertyDescriptor.getReadMethod().getReturnType();
 				}
 			}
 		}
@@ -78,7 +83,7 @@ public abstract class BaseRule implements Rule{
 		return clazz.isAnnotationPresent(Entity.class);
 	}
 	protected Field getField(Class<?> entityClass, String fieldName){
-		Field fieldReturn = null;;
+		Field fieldReturn = null;
 		try {
 			fieldReturn = entityClass.getDeclaredField(fieldName);
 		} catch (NoSuchFieldException e) {
@@ -92,40 +97,40 @@ public abstract class BaseRule implements Rule{
 			throw new BaseRuntimeException(fieldName + " not found in " + entityClass);
 		}
 	}
-	protected boolean isCollectionEntity(Field field){
-		return field.isAnnotationPresent(OneToMany.class) || 
-				field.isAnnotationPresent(ManyToMany.class);
-	}
 	
-	protected boolean isCollectionGetEntity(Class<?> entityClass, Field field){
-		Method method = getGeterMethod(entityClass, field);
-		if(method != null && 
-				(field.isAnnotationPresent(OneToMany.class) || 
-				field.isAnnotationPresent(ManyToMany.class))){
-			return true;
-		}else{
-			return false;
+	protected boolean isCollectionEntity(PropertyDescriptor propertyDescriptor){
+		boolean ret = propertyDescriptor.getReadMethod().isAnnotationPresent(OneToMany.class) || 
+				propertyDescriptor.getReadMethod().isAnnotationPresent(ManyToMany.class);
+		if(!ret){
+			Field field = getField(propertyDescriptor.getReadMethod().getDeclaringClass(), propertyDescriptor.getName());
+			ret = field.isAnnotationPresent(OneToMany.class) || 
+					field.isAnnotationPresent(ManyToMany.class);
 		}
+		return ret;
 	}
 	
-	
-	
-	protected Method getGeterMethod(Class<?> entityClass, Field field){
-		Method methodReturn = null;;
-		
-		for(Method method : entityClass.getMethods()){
-			if(method.getName().replace("get", "").toLowerCase().equals(field.getName().toLowerCase())){
-				 methodReturn = method;
+	protected PropertyDescriptor getPropertyDescriptor(Class<?> entityClass, String field){
+		PropertyDescriptor[] PropertyDescriptors = propertyDescriptorsCache.get(entityClass);
+		if(PropertyDescriptors == null){
+			PropertyDescriptors = getPropertyDescriptors(entityClass);
+			propertyDescriptorsCache.put(entityClass, PropertyDescriptors);
+		}
+		for(PropertyDescriptor propertyDescriptor : PropertyDescriptors){
+			if(propertyDescriptor.getName().equals(field)){
+				return propertyDescriptor;
 			}
 		}
-		
-		if(methodReturn != null){
-			return methodReturn;
-		}else if(!entityClass.getSuperclass().equals(Object.class)){
-			return getGeterMethod(entityClass.getSuperclass(), field);
-		}else{
-			return null;
+		throw new BaseRuntimeException(field + " not found in " + entityClass);
+	}
+	
+	protected PropertyDescriptor[] getPropertyDescriptors(Class<?> entityClass){
+		BeanInfo beanInfo = null;
+		try {
+			beanInfo = Introspector.getBeanInfo(entityClass);
+		} catch (IntrospectionException e) {
+			throw new BaseRuntimeException(e);
 		}
+		return beanInfo.getPropertyDescriptors();
 	}
 	
 	protected String getLastProperty(String property){
@@ -136,5 +141,13 @@ public abstract class BaseRule implements Rule{
 		}
 	}
 
+	protected <T> boolean isJoin(Class<?> entityClass, Path<T> path, String properties){
+		PropertyDescriptor propertyDescriptor = getPropertyDescriptor(entityClass, properties, getLastProperty(properties));
+		return (annotedEntity(propertyDescriptor.getPropertyType()) || isCollectionEntity(propertyDescriptor)) && this.<T>responderJoin(path);
+	}
+	
+	protected String getNavigation(String property){
+		return  property.contains(".")?  property.replace("." + getLastProperty(property), ""): "";
+	}
 
 }

@@ -13,10 +13,12 @@ public class BetweenRule extends BaseRule {
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public <T> Predicate getPredicate(Class<?> entityClass,
 			CriteriaBuilder builder, Root<T> root, Parameter parameter) {
-		String property = parameter.getProperty();
-		Path<T> path = this.<T>getPath(entityClass, root, property);
+		String lasProperty = getLastProperty(parameter.getProperty());
+		String navigation = getNavigation(parameter.getProperty());
+		
+		Path<T> path = this.<T>getPath(entityClass, root, navigation);
 		Comparable[] values = (Comparable[]) parameter.getValue();
-		return builder.<Comparable>between(path.get(getLastProperty(property)), 
+		return builder.<Comparable>between(path.get(lasProperty), 
 				values[0], values[1]);
 	}
 
