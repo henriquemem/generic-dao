@@ -12,9 +12,9 @@ import javax.persistence.criteria.Selection;
 
 import br.com.generic.dao.type.Order;
 
-abstract class BaseWhereListBuilder<T, Q, B extends BaseWhereListBuilder<T, Q, B>> 
+abstract class BaseSearchListBuilder<T, Q, B extends BaseSearchListBuilder<T, Q, B>> 
 	extends 
-		BaseWhereBuilder<B>{
+		BaseSearchBuilder<B>{
 
 	private Integer start;
 	private Integer end;
@@ -25,7 +25,7 @@ abstract class BaseWhereListBuilder<T, Q, B extends BaseWhereListBuilder<T, Q, B
 	private EntityManager manager;
 	private String field;
 	
-	BaseWhereListBuilder(EntityManager manager, Class<T> fromClass, Class<Q> queryClass) {
+	BaseSearchListBuilder(EntityManager manager, Class<T> fromClass, Class<Q> queryClass) {
 		this.fromClass = fromClass;
 		this.queryClass = queryClass;
 		this.manager = manager;

@@ -173,8 +173,8 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 	}
 	
 	@Override
-	public WhereEntityListBuilder<T> listEntities() {
-		return new WhereEntityListBuilder<T>(manager, entityClass, entityClass);
+	public SearchEntityListBuilder<T> listEntities() {
+		return new SearchEntityListBuilder<T>(manager, entityClass, entityClass);
 	}
 	
 	@Override
@@ -183,32 +183,32 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 	}
 	
 	@Override
-	public WhereEntityBuilder<T> searchEntity() {
-		return new WhereEntityBuilder<T>(manager, entityClass, entityClass);
+	public SearchEntityBuilder<T> searchEntity() {
+		return new SearchEntityBuilder<T>(manager, entityClass, entityClass);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E> WhereListBuilder<T, E> listProperties(String field) {
+	public <E> SearchListBuilder<T, E> listProperties(String field) {
 		ParameterizedType paramType;
         paramType = (ParameterizedType) new Param<E>().getClass().getGenericInterfaces()[0];
         Class<E> parameterClass = (Class<E>) paramType.getActualTypeArguments()[0].getClass();
 
-        WhereListBuilder<T, E> whereListBuild = new WhereListBuilder<T, E>(manager , entityClass, parameterClass);
-		whereListBuild.setField(field);
-		return whereListBuild;
+        SearchListBuilder<T, E> searchListBuilder = new SearchListBuilder<T, E>(manager , entityClass, parameterClass);
+		searchListBuilder.setField(field);
+		return searchListBuilder;
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public<E> WhereBuilder<T, E> searchProperty(String field) {
+	public<E> SearchBuilder<T, E> searchProperty(String field) {
 		ParameterizedType paramType;
         paramType = (ParameterizedType) new Param<E>().getClass().getGenericInterfaces()[0];
         Class<E> parameterClass = (Class<E>) paramType.getActualTypeArguments()[0].getClass();
 		
-        WhereBuilder<T, E> whereBuild = new WhereBuilder<>(manager, entityClass, parameterClass);
-        whereBuild.setField(field);
-        return whereBuild;
+        SearchBuilder<T, E> searchBuilder = new SearchBuilder<>(manager, entityClass, parameterClass);
+        searchBuilder.setField(field);
+        return searchBuilder;
 	}
 	
 	protected T consist(T entity){ 

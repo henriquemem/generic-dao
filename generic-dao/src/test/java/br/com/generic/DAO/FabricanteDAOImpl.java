@@ -4,10 +4,10 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import br.com.generic.dao.GenericDAOImpl;
-import br.com.generic.entity.Produto;
+import br.com.generic.entity.Fabricante;
 
 
-public class FabricanteDAOImpl extends GenericDAOImpl<Produto> implements FabricanteDAO{
+public class FabricanteDAOImpl extends GenericDAOImpl<Fabricante> implements FabricanteDAO{
 
 
 	@Inject

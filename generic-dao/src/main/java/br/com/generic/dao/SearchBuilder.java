@@ -10,15 +10,16 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
-import com.mchange.util.DuplicateElementException;
+import br.com.generic.dao.exception.DuplicateResultException;
 
-public class WhereBuilder<T, Q> extends BaseWhereBuilder< WhereBuilder<T, Q>>{
+
+public class SearchBuilder<T, Q> extends BaseSearchBuilder< SearchBuilder<T, Q>>{
 	private EntityManager manager;
 	private final Class<Q> queryClass;
 	private final Class<T> fromClass;
 	private String field;
 
-	WhereBuilder(EntityManager manager, Class<T> fromClass, Class<Q> queryClass) {
+	SearchBuilder(EntityManager manager, Class<T> fromClass, Class<Q> queryClass) {
 		this.fromClass = fromClass;
 		this.queryClass = queryClass;
 		this.manager = manager;
@@ -50,7 +51,7 @@ public class WhereBuilder<T, Q> extends BaseWhereBuilder< WhereBuilder<T, Q>>{
 		List<Q> list = query.getResultList();
 		
 		if(list.size() > 1){
-			throw new DuplicateElementException("more than one " + queryClass.getSimpleName() + " has been found.");
+			throw new DuplicateResultException("more than one result has been found.");
 		}
 		
 		if(list.isEmpty()){

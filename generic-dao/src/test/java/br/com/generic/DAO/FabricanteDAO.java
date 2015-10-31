@@ -18,9 +18,9 @@ package br.com.generic.DAO;
 import javax.persistence.EntityManager;
 
 import br.com.generic.dao.GenericDAO;
-import br.com.generic.entity.Produto;
+import br.com.generic.entity.Fabricante;
 
-public interface FabricanteDAO extends GenericDAO<Produto> {
+public interface FabricanteDAO extends GenericDAO<Fabricante> {
 
 	public void setEntityManager(EntityManager entityManager);
 }

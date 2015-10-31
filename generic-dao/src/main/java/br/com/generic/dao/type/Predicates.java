@@ -11,7 +11,7 @@ import br.com.generic.dao.rules.GreaterThanOrEqualToRule;
 import br.com.generic.dao.rules.GreaterThanRule;
 import br.com.generic.dao.rules.InRule;
 import br.com.generic.dao.rules.IsMemberRule;
-import br.com.generic.dao.rules.IsNotMember;
+import br.com.generic.dao.rules.IsNotMemberRule;
 import br.com.generic.dao.rules.IsNotNullRule;
 import br.com.generic.dao.rules.IsNullRule;
 import br.com.generic.dao.rules.LessThanOrEqualToRule;
@@ -148,6 +148,6 @@ public enum Predicates implements Rule{
 	protected Rule betweenRule = new BetweenRule();
 	protected Rule notLikeRule = new NotLikeRule();
 	protected Rule isMemberRule = new IsMemberRule();
-	protected Rule isNotMemberRule = new IsNotMember();
+	protected Rule isNotMemberRule = new IsNotMemberRule();
 	
 }

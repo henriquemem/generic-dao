@@ -10,11 +10,11 @@ import javax.persistence.criteria.Root;
 
 import br.com.generic.dao.type.Predicates;
 
-abstract class BaseWhereBuilder<B extends BaseWhereBuilder<?>> {
+abstract class BaseSearchBuilder<B extends BaseSearchBuilder<?>> {
 
 	private List<Parameter> parameters = new ArrayList<Parameter>();
-	private List<BaseWhereBuilder<?>> andWhereBuilds = new ArrayList<BaseWhereBuilder<?>>();
-	private List<BaseWhereBuilder<?>> orWhereBuilds = new ArrayList<BaseWhereBuilder<?>>();
+	private List<BaseSearchBuilder<?>> andSearchBuilds = new ArrayList<BaseSearchBuilder<?>>(); 
+	private List<BaseSearchBuilder<?>> orSearchBuilds = new ArrayList<BaseSearchBuilder<?>>();
 	
 	@SuppressWarnings("unchecked")
 	public B equal(String arg0, Object value){
@@ -146,14 +146,14 @@ abstract class BaseWhereBuilder<B extends BaseWhereBuilder<?>> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public B or(B whereBuild){
-		orWhereBuilds.add(whereBuild);
+	public B or(B searchBuildr){
+		orSearchBuilds.add(searchBuildr);
 		return ((B) this);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public B and(B whereBuild){
-		andWhereBuilds.add(whereBuild);
+	public B and(B searchBuildr){
+		andSearchBuilds.add(searchBuildr);
 		return ((B) this);
 	}
 	
@@ -169,7 +169,7 @@ abstract class BaseWhereBuilder<B extends BaseWhereBuilder<?>> {
 			thisPredicate = builder.and(predicates);
 		}
 		
-		if(!andWhereBuilds.isEmpty()){
+		if(!andSearchBuilds.isEmpty()){
 			Predicate andPredicate = getAndPredicates(builder, root);
 			if(thisPredicate != null && andPredicate != null){
 				thisPredicate =  builder.and(andPredicate, thisPredicate);
@@ -177,7 +177,7 @@ abstract class BaseWhereBuilder<B extends BaseWhereBuilder<?>> {
 				thisPredicate = andPredicate;
 			}
 		}
-		if(!orWhereBuilds.isEmpty()){
+		if(!orSearchBuilds.isEmpty()){
 			Predicate orPredicate = getOrPredicates(builder, root);
 			
 			if(thisPredicate != null && orPredicate != null){
@@ -190,10 +190,10 @@ abstract class BaseWhereBuilder<B extends BaseWhereBuilder<?>> {
 	}
 	
 	private Predicate getOrPredicates(CriteriaBuilder builder, Root<?> root){
-		Predicate[] predicates = new Predicate[orWhereBuilds.size()];
+		Predicate[] predicates = new Predicate[orSearchBuilds.size()];
 		Predicate predicate;
-		for(int i = 0; i < orWhereBuilds.size() ; i++){
-			predicate = orWhereBuilds.get(i).getPredicate(builder, root);
+		for(int i = 0; i < orSearchBuilds.size() ; i++){
+			predicate = orSearchBuilds.get(i).getPredicate(builder, root);
 			if(predicate != null){
 				predicates[i] = predicate;
 			}
@@ -202,10 +202,10 @@ abstract class BaseWhereBuilder<B extends BaseWhereBuilder<?>> {
 	}
 	
 	private Predicate getAndPredicates(CriteriaBuilder builder, Root<?> root){
-		Predicate[] predicates = new Predicate[andWhereBuilds.size()];
+		Predicate[] predicates = new Predicate[andSearchBuilds.size()];
 		Predicate predicate;
-		for(int i = 0; i < andWhereBuilds.size() ; i++){
-			predicate = andWhereBuilds.get(i).getPredicate(builder, root);
+		for(int i = 0; i < andSearchBuilds.size() ; i++){
+			predicate = andSearchBuilds.get(i).getPredicate(builder, root);
 			if(predicate != null){
 				predicates[i] = predicate;
 			}

@@ -141,7 +141,7 @@ public abstract class BaseRule implements Rule{
 		}
 	}
 
-	protected <T> boolean isJoin(Class<?> entityClass, Path<T> path, String properties){
+	protected <T> boolean isFrom(Class<?> entityClass, Path<T> path, String properties){
 		PropertyDescriptor propertyDescriptor = getPropertyDescriptor(entityClass, properties, getLastProperty(properties));
 		return (annotedEntity(propertyDescriptor.getPropertyType()) || isCollectionEntity(propertyDescriptor)) && this.<T>responderJoin(path);
 	}

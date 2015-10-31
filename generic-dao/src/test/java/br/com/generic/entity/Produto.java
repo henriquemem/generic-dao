@@ -15,10 +15,6 @@ import javax.persistence.Table;
 public class Produto extends ChaveValor<Produto> {
 	private static final long serialVersionUID = 4986454563776608370L;
 		
-	@Column(name="quantidade_minima")
-	private Double quantidadeMinima;
-	@Column(name="observacao")
-	private String observacao;
 	@ManyToOne
 	@JoinColumn(name="fabricante_id")
 	private Fabricante fabricante;	
@@ -27,21 +23,7 @@ public class Produto extends ChaveValor<Produto> {
 	@JoinColumn(name="produto_id")
 	private Set<Embalagem> embalagens = new HashSet<Embalagem>();	
 
-	public Double getQuantidadeMinima() {
-		return quantidadeMinima;
-	}
 
-	public void setQuantidadeMinima(Double quantidadeMinima) {
-		this.quantidadeMinima = quantidadeMinima;
-	}
-	
-	public String getObservacao() {
-		return observacao;
-	}
-
-	public void setObservacao(String observacao) {
-		this.observacao = observacao;
-	}
 
 	public Fabricante getFabricante() {
 		return fabricante;

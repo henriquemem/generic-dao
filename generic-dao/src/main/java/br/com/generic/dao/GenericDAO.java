@@ -17,12 +17,12 @@ public abstract interface GenericDAO<T> {
 
     public List<T> list(int beginning, int end, String order);
 
-	public WhereEntityListBuilder<T> listEntities();
+	public SearchEntityListBuilder<T> listEntities();
 
-	public WhereEntityBuilder<T> searchEntity();
+	public SearchEntityBuilder<T> searchEntity();
 
-    public <E> WhereListBuilder<T, E> listProperties(String field);
+    public <E> SearchListBuilder<T, E> listProperties(String field);
 
-    public<E> WhereBuilder<T, E> searchProperty(String field);
+    public<E> SearchBuilder<T, E> searchProperty(String field);
     
 }
