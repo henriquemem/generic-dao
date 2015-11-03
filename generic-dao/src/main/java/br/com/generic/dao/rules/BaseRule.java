@@ -6,7 +6,6 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,16 +13,14 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.criteria.From;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import br.com.generic.exceptions.BaseRuntimeException;
 
 public abstract class BaseRule implements Rule{
 	
-	private Map<Class<?>, PropertyDescriptor[]> propertyDescriptorsCache = new HashMap<Class<?>, PropertyDescriptor[]>();
+	private static Map<Class<?>, PropertyDescriptor[]> propertyDescriptorsCache = new HashMap<Class<?>, PropertyDescriptor[]>();
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected <T> Path<T> getPath(Class<?> entityClass, Root<T> root, String properties){

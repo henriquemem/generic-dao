@@ -177,6 +177,29 @@ abstract class BaseSearchBuilder<B extends BaseSearchBuilder<?>> {
 		return ((B) this);
 	}
 	
+
+	public B eq(String arg0, Object value){
+		return (B) equal(arg0, value);	
+	}
+	
+	public B ge(String arg0, Comparable<?> value){
+		return (B) greaterThanOrEqualTo(arg0, value);	
+	}
+	
+	public B gt(String arg0, Comparable<?> value){
+		return (B) greaterThan(arg0, value);	
+	}
+
+	
+	public B le(String arg0, Comparable<?> value){
+		return (B) lessThanOrEqualTo(arg0, value);	
+	}
+	
+	public B lt(String arg0, Comparable<?> value){
+		return (B) greaterThan(arg0, value);	
+	}
+
+	
 	Predicate getPredicate(CriteriaBuilder builder, Root<?> root){
 		Predicate[] predicates = new Predicate[parameters.size()];
 		
