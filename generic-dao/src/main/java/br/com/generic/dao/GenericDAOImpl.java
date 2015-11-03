@@ -158,6 +158,7 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 		CriteriaQuery<T> criteriaQuery = builder.createQuery(entityClass);
 		Root<T> root = criteriaQuery.from(entityClass);
 		criteriaQuery.select(root) ;
+		criteriaQuery.distinct(true);
 		if(order != null)
 			criteriaQuery.orderBy(builder.asc(root.get(order)));
 		

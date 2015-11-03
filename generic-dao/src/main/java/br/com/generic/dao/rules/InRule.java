@@ -1,5 +1,8 @@
 package br.com.generic.dao.rules;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Path;
@@ -16,12 +19,13 @@ public class InRule extends BaseRule {
 			Parameter parameter) {
 		String lasProperty = getLastProperty(parameter.getProperty());
 		String navigation = getNavigation(parameter.getProperty());
-		
+		Collection value = parameter.getValue() instanceof Collection ? (Collection) parameter.getValue() : Arrays.asList((Object[])parameter.getValue()); 
+			
 		Path<T> path = this.<T>getPath(entityClass, root, navigation);
 		if(isFrom(entityClass, path, parameter.getProperty())){
-			return builder.in(((From)path).join(lasProperty)).in(parameter.getValue());
+			return builder.in(((From)path).join(lasProperty)).value(value);
 		}
-		return builder.in(((From)path).get(lasProperty)).in(parameter.getValue());
+		return builder.in(((From)path).get(lasProperty)).value(value);
 	}
 
 }

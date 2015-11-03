@@ -34,7 +34,7 @@ public class SearchBuilder<T, Q> extends BaseSearchBuilder< SearchBuilder<T, Q>>
 		Root<T> root = criteriaQuery.from(fromClass);
 		
 		criteriaQuery = criteriaQuery.select((Selection<? extends Q>) root) ;
-		
+		criteriaQuery.distinct(true);
 		Predicate predicate = getPredicate(builder, root);
 		if(predicate != null){
 			criteriaQuery = criteriaQuery.where(predicate);

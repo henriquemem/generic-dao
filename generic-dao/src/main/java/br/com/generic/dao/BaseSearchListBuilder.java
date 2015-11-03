@@ -61,14 +61,12 @@ abstract class BaseSearchListBuilder<T, Q, B extends BaseSearchListBuilder<T, Q,
 		CriteriaBuilder builder = manager.getCriteriaBuilder() ;
 		CriteriaQuery<Q> criteriaQuery = builder.createQuery(queryClass);
 		Root<T> root = criteriaQuery.from(fromClass);
-		
 		criteriaQuery = criteriaQuery.select((Selection<? extends Q>) root) ;
 		
 		Predicate predicate = getPredicate(builder, root);
 		if(predicate != null){
 			criteriaQuery = criteriaQuery.where(predicate);
 		}
-		
 		if(order != null){
 			if(order.equals(Order.ASC)){
 				criteriaQuery = criteriaQuery.orderBy(builder.asc(root.get(propertyOrder)));
@@ -79,9 +77,10 @@ abstract class BaseSearchListBuilder<T, Q, B extends BaseSearchListBuilder<T, Q,
 		
 		if(field != null)
 			criteriaQuery = criteriaQuery.select(root.<Q>get(field));
+		else
+			criteriaQuery.distinct(true);
 		
 		TypedQuery<Q> query = manager.createQuery(criteriaQuery);
-		
 		if(start != null && start > 0)
 			query.setFirstResult(start);
 		if(end != null && end > 0)

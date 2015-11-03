@@ -37,5 +37,37 @@ public class Produto extends ChaveValor<Produto> {
 		return embalagens = embalagens == null ? new HashSet<Embalagem>() : embalagens;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((embalagens == null) ? 0 : embalagens.hashCode());
+		result = prime * result + ((fabricante == null) ? 0 : fabricante.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produto other = (Produto) obj;
+		if (embalagens == null) {
+			if (other.embalagens != null)
+				return false;
+		} else if (!embalagens.equals(other.embalagens))
+			return false;
+		if (fabricante == null) {
+			if (other.fabricante != null)
+				return false;
+		} else if (!fabricante.equals(other.fabricante))
+			return false;
+		return true;
+	}
+
+	
 		
 }

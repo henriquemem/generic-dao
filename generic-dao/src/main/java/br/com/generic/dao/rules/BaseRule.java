@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -34,12 +35,9 @@ public abstract class BaseRule implements Rule{
 			PropertyDescriptor propertyDescriptor;
 			for(int i = 0 ; i < (ropertys.length) ; i++){
 				propertyDescriptor = getPropertyDescriptor(entityClass, properties, ropertys[i]);
-				if(this.<T>responderJoin(path)){
+				if(this.<T>responderFrom(path)){
 					if(annotedEntity(propertyDescriptor.getReadMethod().getReturnType()) || isCollectionEntity(propertyDescriptor)){
-						if(path instanceof Join)
-							path = ((Join)path).join(ropertys[i]);
-						else
-							path = ((Root)path).join(ropertys[i]);
+						path = ((From)path).join(ropertys[i]);
 					}else{
 						path = path.get(ropertys[i]);
 					}
@@ -75,8 +73,8 @@ public abstract class BaseRule implements Rule{
 		return null;
 	}
 	
-	protected <T> boolean responderJoin(Path<T> path){
-		return path instanceof Join || path instanceof Root;
+	protected <T> boolean responderFrom(Path<T> path){
+		return path instanceof From;
 	}
 	
 	protected boolean annotedEntity(Class<?> clazz){
@@ -143,7 +141,7 @@ public abstract class BaseRule implements Rule{
 
 	protected <T> boolean isFrom(Class<?> entityClass, Path<T> path, String properties){
 		PropertyDescriptor propertyDescriptor = getPropertyDescriptor(entityClass, properties, getLastProperty(properties));
-		return (annotedEntity(propertyDescriptor.getPropertyType()) || isCollectionEntity(propertyDescriptor)) && this.<T>responderJoin(path);
+		return (annotedEntity(propertyDescriptor.getPropertyType()) || isCollectionEntity(propertyDescriptor)) && this.<T>responderFrom(path);
 	}
 	
 	protected String getNavigation(String property){

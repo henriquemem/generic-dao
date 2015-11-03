@@ -27,6 +27,26 @@ abstract class BaseSearchBuilder<B extends BaseSearchBuilder<?>> {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public B isMember(String arg0, Object value){
+		Parameter parameter = new Parameter();
+		parameter.setProperty(arg0);
+		parameter.setPredicates(Predicates.IS_MEMBER);
+		parameter.setValue(value);
+		parameters.add(parameter);
+		return (B) this;	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public B isNotMember(String arg0, Object value){
+		Parameter parameter = new Parameter();
+		parameter.setProperty(arg0);
+		parameter.setPredicates(Predicates.IS_NOT_MEMBER);
+		parameter.setValue(value);
+		parameters.add(parameter);
+		return (B) this;	
+	}
+	
+	@SuppressWarnings("unchecked")
 	public B greaterThanOrEqualTo(String arg0, Comparable<?> value){
 		Parameter parameter = new Parameter();
 		parameter.setProperty(arg0);
