@@ -18,7 +18,6 @@ public class IsNotMemberTest extends BaseSearchTest {
 	@Override
 	public void listPropertiesTest() {
 
-		int size = produtoDao.list(0, 0, null).size();
 		
 		Produto produto = produtoDao.searchEntity()
 				.equal("codigo", 200)
@@ -38,13 +37,11 @@ public class IsNotMemberTest extends BaseSearchTest {
 				.isNotMember("embalagens.codigosBarras", codigoBarras)
 				.list();
 		
-		List<String> list1 = produtoDao.<String>listProperties("nome")
-				.list();
-		
-		assertEquals( size - 1, list.size());
+		assertFalse(list.isEmpty());
 	}
 
 	@Override
+	@Test(expected=DuplicateResultException.class)
 	public void searchPropertyTest() {
 		
 		Produto produto = produtoDao.searchEntity()
@@ -62,8 +59,6 @@ public class IsNotMemberTest extends BaseSearchTest {
 	@Override
 	public void listEntitiesTest() {
 		
-		int size = produtoDao.list(0, 0, null).size();
-		
 		Produto produto = produtoDao.searchEntity()
 				.equal("codigo", 200)
 				.search();
@@ -76,10 +71,11 @@ public class IsNotMemberTest extends BaseSearchTest {
 				.isNotMember("embalagens.codigosBarras", codigoBarras)
 				.list();
 		
-		assertEquals( size - 1, list.size());
+		assertFalse(list.isEmpty());
 	}
 
 	@Override
+	@Test(expected=DuplicateResultException.class)
 	public void searchEntityTest() {
 		
 		Produto produto = produtoDao.searchEntity()
@@ -99,7 +95,6 @@ public class IsNotMemberTest extends BaseSearchTest {
 	@Override
 	public void listPropertiesMultTest() {
 		
-		int size = produtoDao.list(0, 0, null).size();
 		
 		Produto produto = produtoDao.searchEntity()
 				.equal("codigo", 200)
@@ -115,7 +110,7 @@ public class IsNotMemberTest extends BaseSearchTest {
 				.isNotMember("embalagens.codigosBarras", codigoBarras)
 				.list();
 		
-		assertEquals( size - 1, list.size());
+		assertFalse(list.isEmpty());
 	}
 
 	@Override
@@ -141,10 +136,6 @@ public class IsNotMemberTest extends BaseSearchTest {
 	@Override
 	public void listEntitiesMultTest() {
 		
-		int size = produtoDao.listEntities()
-				.between("version", 10, 20)
-				.list()
-				.size();
 		
 		Produto produto = produtoDao.searchEntity()
 				.equal("codigo", 200)
@@ -159,7 +150,7 @@ public class IsNotMemberTest extends BaseSearchTest {
 				.isNotMember("embalagens.codigosBarras", codigoBarras)
 				.list();
 		
-		assertEquals( size - 1, list.size());
+		assertFalse(list.isEmpty());
 	}
 
 	@Override

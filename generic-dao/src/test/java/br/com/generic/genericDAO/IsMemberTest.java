@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.com.generic.WeldJUnit4Runner;
+import br.com.generic.dao.exception.DuplicateResultException;
 import br.com.generic.entity.Embalagem;
 import br.com.generic.entity.EmbalagemCodigoBarras;
 import br.com.generic.entity.Produto;
@@ -39,6 +40,7 @@ public class IsMemberTest extends BaseSearchTest {
 	}
 
 	@Override
+	@Test
 	public void searchPropertyTest() {
 		
 		Produto produto = produtoDao.searchEntity()
@@ -71,6 +73,7 @@ public class IsMemberTest extends BaseSearchTest {
 	}
 
 	@Override
+	@Test
 	public void searchEntityTest() {
 		
 		Produto produto = produtoDao.searchEntity()

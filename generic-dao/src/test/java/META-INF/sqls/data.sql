@@ -2435,7 +2435,8 @@ INSERT INTO produto VALUES (826710001, 819320001, 374, 'ZYLORIC', 'ZYLORIC', 14)
 INSERT INTO produto VALUES (823710001, 819350001, 274, 'ZYPRED', 'ZYPRED', 14);
 
 
-alter table embalagem_codigo_barras add COLUMN versao integer;
+
+alter table embalagem_codigo_barras add COLUMN versao integer default 1;
 
 alter table Privilegio add constraint FK_d5ubalh1hff2oo0sgk4j798r4 foreign key (funcionario_id) references Funcionario (id)
 alter table Privilegio add constraint FK_i2i6nwy7jq27xqy3ey56xj9qf foreign key (usuario_id) references Usuario (id)
