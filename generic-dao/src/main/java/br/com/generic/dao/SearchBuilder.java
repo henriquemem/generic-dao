@@ -19,7 +19,7 @@ public class SearchBuilder<T, Q> extends BaseSearchBuilder< SearchBuilder<T, Q>>
 	private final Class<T> fromClass;
 	private String field;
 
-	SearchBuilder(EntityManager manager, Class<T> fromClass, Class<Q> queryClass) {
+	public SearchBuilder(EntityManager manager, Class<T> fromClass, Class<Q> queryClass) {
 		this.fromClass = fromClass;
 		this.queryClass = queryClass;
 		this.manager = manager;

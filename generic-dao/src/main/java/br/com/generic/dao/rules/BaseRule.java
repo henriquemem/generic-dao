@@ -20,7 +20,7 @@ import br.com.generic.exceptions.BaseRuntimeException;
 
 public abstract class BaseRule implements Rule{
 	
-	private static Map<Class<?>, PropertyDescriptor[]> propertyDescriptorsCache = new HashMap<Class<?>, PropertyDescriptor[]>();
+	private Map<Class<?>, PropertyDescriptor[]> propertyDescriptorsCache = new HashMap<Class<?>, PropertyDescriptor[]>();
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected <T> Path<T> getPath(Class<?> entityClass, Root<T> root, String properties){

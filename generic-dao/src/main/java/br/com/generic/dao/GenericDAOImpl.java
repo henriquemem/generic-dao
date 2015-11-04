@@ -175,7 +175,7 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 	
 	@Override
 	public SearchEntityListBuilder<T> listEntities() {
-		return new SearchEntityListBuilder<T>(manager, entityClass, entityClass);
+		return new SearchEntityListBuilder<T>(manager, entityClass);
 	}
 	
 	@Override
@@ -185,7 +185,7 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 	
 	@Override
 	public SearchEntityBuilder<T> searchEntity() {
-		return new SearchEntityBuilder<T>(manager, entityClass, entityClass);
+		return new SearchEntityBuilder<T>(manager, entityClass);
 	}
 	
 	@Override
@@ -202,7 +202,7 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public<E> SearchBuilder<T, E> searchProperty(String field) {
+	public <E> SearchBuilder<T, E> searchProperty(String field) {
 		ParameterizedType paramType;
         paramType = (ParameterizedType) new Param<E>().getClass().getGenericInterfaces()[0];
         Class<E> parameterClass = (Class<E>) paramType.getActualTypeArguments()[0].getClass();
