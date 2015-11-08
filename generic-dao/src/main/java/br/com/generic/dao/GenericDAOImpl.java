@@ -34,6 +34,7 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 	@Override
     public T insert(T entity){
     	entity = beforeInsert( consist(entity));
+    	this.manager.persist(entity);
     	entity = this.manager.merge(entity);
 		return afterInsert(entity);
 	}
