@@ -34,16 +34,16 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 	@Override
     public T insert(T entity){
     	entity = beforeInsert( consist(entity));
-    	this.manager.persist(entity);
-    	entity = this.manager.merge(entity);
+    	getEntityManager().persist(entity);
+    	entity = getEntityManager().merge(entity);
 		return afterInsert(entity);
 	}
 	
 	@Override
 	public T delete(T entity){
 		entity = beforeDelete(entity);
-		entity = this.manager.merge(entity);
-		this.manager.remove(entity);
+		entity = getEntityManager().merge(entity);
+		getEntityManager().remove(entity);
 		setIdNull(entity);
 		return afterDelete(entity);
 	}
@@ -142,20 +142,20 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 	@Override
 	public T update(T entity){
 		entity = beforeUpdate( consist(entity));
-		entity = this.manager.merge(entity);
+		entity = getEntityManager().merge(entity);
 		return afterUpdate(entity);
 	
 	}
 	
 	@Override
 	public T disassociate(T entity){
-		manager.detach(entity);
+		getEntityManager().detach(entity);
 		return entity;
 	}
 	
 	@Override
 	public List<T> list(int beginning, int end, String order){
-		CriteriaBuilder builder = manager.getCriteriaBuilder() ;
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder() ;
 		CriteriaQuery<T> criteriaQuery = builder.createQuery(entityClass);
 		Root<T> root = criteriaQuery.from(entityClass);
 		criteriaQuery.select(root) ;
@@ -163,7 +163,7 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 		if(order != null)
 			criteriaQuery.orderBy(builder.asc(root.get(order)));
 		
-		TypedQuery<T> query = manager.createQuery(criteriaQuery);
+		TypedQuery<T> query = getEntityManager().createQuery(criteriaQuery);
 		
 		if(beginning > 0)
 			query.setFirstResult(beginning);
@@ -176,17 +176,17 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 	
 	@Override
 	public SearchEntityListBuilder<T> listEntities() {
-		return new SearchEntityListBuilder<T>(manager, entityClass);
+		return new SearchEntityListBuilder<T>(getEntityManager(), entityClass);
 	}
 	
 	@Override
 	public T findEntityById(long id) {
-		return (T) this.manager.find(entityClass, id);
+		return (T) getEntityManager().find(entityClass, id);
 	}
 	
 	@Override
 	public SearchEntityBuilder<T> searchEntity() {
-		return new SearchEntityBuilder<T>(manager, entityClass);
+		return new SearchEntityBuilder<T>(getEntityManager(), entityClass);
 	}
 	
 	@Override
@@ -196,7 +196,7 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
         paramType = (ParameterizedType) new Param<E>().getClass().getGenericInterfaces()[0];
         Class<E> parameterClass = (Class<E>) paramType.getActualTypeArguments()[0].getClass();
 
-        SearchListBuilder<T, E> searchListBuilder = new SearchListBuilder<T, E>(manager , entityClass, parameterClass);
+        SearchListBuilder<T, E> searchListBuilder = new SearchListBuilder<T, E>(getEntityManager() , entityClass, parameterClass);
 		searchListBuilder.setField(field);
 		return searchListBuilder;
 	}
@@ -208,7 +208,7 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
         paramType = (ParameterizedType) new Param<E>().getClass().getGenericInterfaces()[0];
         Class<E> parameterClass = (Class<E>) paramType.getActualTypeArguments()[0].getClass();
 		
-        SearchBuilder<T, E> searchBuilder = new SearchBuilder<>(manager, entityClass, parameterClass);
+        SearchBuilder<T, E> searchBuilder = new SearchBuilder<>(getEntityManager(), entityClass, parameterClass);
         searchBuilder.setField(field);
         return searchBuilder;
 	}
@@ -241,8 +241,8 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 		return entity;
 	}
 	
-	public EntityManager getEntityManager() {
-		return manager;
+	protected EntityManager getEntityManager() {
+		return this.manager;
 	}
 
 	public void setEntityManager(EntityManager manager) {
