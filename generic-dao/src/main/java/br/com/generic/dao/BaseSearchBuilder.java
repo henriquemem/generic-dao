@@ -10,7 +10,7 @@ import javax.persistence.criteria.Root;
 
 import br.com.generic.dao.type.Predicates;
 
-abstract class BaseSearchBuilder<B extends BaseSearchBuilder<?>> {
+public abstract class BaseSearchBuilder<B extends BaseSearchBuilder<?>> {
 
 	private List<Parameter> parameters = new ArrayList<Parameter>();
 	private List<BaseSearchBuilder<?>> andSearchBuilds = new ArrayList<BaseSearchBuilder<?>>(); 

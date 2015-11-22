@@ -17,9 +17,9 @@ public abstract interface GenericDAO<T> {
 
     public List<T> list(int beginning, int end, String order);
 
-	public SearchEntityListBuilder<T> listEntities();
+    public SearchEntityListBuilder<T> listEntities();
 
-	public SearchEntityBuilder<T> searchEntity();
+    public SearchEntityBuilder<T> searchEntity();
 
     public <E> SearchListBuilder<T, E> listProperties(String field);
 
