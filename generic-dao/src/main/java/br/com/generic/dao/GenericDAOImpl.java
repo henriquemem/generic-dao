@@ -1,22 +1,14 @@
 package br.com.generic.dao;
 
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Id;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
-import br.com.generic.dao.type.PrimitiveType;
-import br.com.generic.exceptions.BaseRuntimeException;
 
 /**
  *
@@ -44,99 +36,7 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T>{
 		entity = beforeDelete(entity);
 		entity = getEntityManager().merge(entity);
 		getEntityManager().remove(entity);
-		setIdNull(entity);
 		return afterDelete(entity);
-	}
-	
-	private void setIdNull(T entity){
-		if(!setIdFieldNull(entity)){
-			setIdMethodNull(entity);
-		}
-	}
-	
-	private boolean setIdFieldNull(T entity){
-		boolean r = false;
-		
-		Field fieldId = null;
-		Class<?> entityClass = this.entityClass;
-		fieldId = getIdField(entityClass);
-		while (fieldId == null && !entityClass.equals(Object.class)){
-			entityClass = entityClass.getSuperclass();
-			fieldId = getIdField(entityClass);
-		}
-		
-		if(fieldId != null){
-			fieldId.setAccessible(true);
-			Type t =  fieldId.getType();
-			try {
-				if(PrimitiveType.isPrimitiveType(t)){
-					fieldId.set(entity, PrimitiveType.getPrimitiveType(t).getValueDefalt());
-				}else{
-					fieldId.set(entity, null);
-				}
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-				throw new BaseRuntimeException(e);
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-				throw new BaseRuntimeException(e);
-			}
-			r = true;
-		}
-		
-		return r;
-	}
-	
-	private boolean setIdMethodNull(T entity){
-		boolean r = false;
-		
-		Method methodId = null;
-		Class<?> entityClass = this.entityClass;
-		methodId = getIdMethod(entityClass);
-		while (methodId == null && !entityClass.equals(Object.class)){
-			entityClass = entityClass.getSuperclass();
-			methodId = getIdMethod(entityClass);
-		}
-		
-		if(methodId != null){
-			methodId.setAccessible(true);
-			try {
-				Object value = null;
-				methodId.invoke(entity, value);
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-				throw new BaseRuntimeException(e);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-				throw new BaseRuntimeException(e);
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-				throw new BaseRuntimeException(e);
-			}
-			r = true;
-		}
-		
-		return r;
-	}
-	
-	private Field getIdField(Class<?> entityClass){
-		Field fieldId = null;
-		for(Field field : entityClass.getDeclaredFields()){
-			if(field.isAnnotationPresent(Id.class)){
-				fieldId = field;
-			}
-		}
-		return fieldId;
-	}
-	
-	private Method getIdMethod(Class<?> entityClass){
-		Method methodId = null;
-		for(Method method : entityClass.getDeclaredMethods()){
-			if(method.isAnnotationPresent(Id.class)){
-				methodId = method;
-			}
-		}
-		return methodId;
 	}
 
 	@Override
