@@ -14,7 +14,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 
 
 @MappedSuperclass
-public class UsuarioBase extends EntityId{
+public class UsuarioBase extends EntityId<UsuarioBase>{
 
 	private static final long serialVersionUID = -3327573295169448466L;
 	

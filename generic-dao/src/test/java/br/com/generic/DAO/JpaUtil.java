@@ -7,9 +7,19 @@ import javax.persistence.Persistence;
 
 class JpaUtil {
 	
-	private EntityManagerFactory factory =  Persistence.createEntityManagerFactory("projeto");
+	private static EntityManagerFactory factory;
 	
 	
+	
+	public JpaUtil() {
+		super();
+		if(factory == null){
+			factory =  Persistence.createEntityManagerFactory("projeto");
+		}
+	}
+
+
+
 	@Produces
 	public EntityManager getEntityManager(){
 		return factory.createEntityManager();

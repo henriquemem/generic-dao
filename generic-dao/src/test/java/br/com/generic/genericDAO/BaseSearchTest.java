@@ -32,6 +32,7 @@ public abstract class BaseSearchTest extends TestCase{
 	@After
 	public void afterTest(){
 		entityManager.getTransaction().commit();
+		entityManager.close();
 	}
 	
 	

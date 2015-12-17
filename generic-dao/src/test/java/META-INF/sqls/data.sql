@@ -2438,10 +2438,10 @@ INSERT INTO produto VALUES (823710001, 819350001, 274, 'ZYPRED', 'ZYPRED', 14);
 
 alter table embalagem_codigo_barras add COLUMN versao integer default 1;
 
-alter table Privilegio add constraint FK_d5ubalh1hff2oo0sgk4j798r4 foreign key (funcionario_id) references Funcionario (id)
-alter table Privilegio add constraint FK_i2i6nwy7jq27xqy3ey56xj9qf foreign key (usuario_id) references Usuario (id)
-alter table embalagem add constraint FK_nq9qru0rxfg5vl7rryqw7je0 foreign key (produto_id) references produto (id)
-alter table embalagem_codigo_barras add constraint FK_bkvpso0i9m0petlqh0unl4eoe foreign key (embalagem_id) references embalagem (id)
-alter table produto add constraint FK_cu72orus7wbxu7y54ncjwdr0m foreign key (fabricante_id) references fabricante (id)
+alter table Privilegio add constraint FK_d5ubalh1hff2oo0sgk4j798r4 foreign key (funcionario_id) references Funcionario (id);
+alter table Privilegio add constraint FK_i2i6nwy7jq27xqy3ey56xj9qf foreign key (usuario_id) references Usuario (id);
+alter table embalagem add constraint FK_nq9qru0rxfg5vl7rryqw7je0 foreign key (produto_id) references produto (id);
+alter table embalagem_codigo_barras add constraint FK_bkvpso0i9m0petlqh0unl4eoe foreign key (embalagem_id) references embalagem (id);
+alter table produto add constraint FK_cu72orus7wbxu7y54ncjwdr0m foreign key (fabricante_id) references fabricante (id);
 
 
