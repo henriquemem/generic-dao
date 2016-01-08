@@ -61,7 +61,7 @@ abstract class BaseSearchListBuilderImpl<T, Q, B extends BaseSearchListBuilder<T
 	
 	@SuppressWarnings("unchecked")
 	public List<Q> list(){
-		CriteriaBuilder builder = manager.getCriteriaBuilder() ;
+		CriteriaBuilder builder = getManager().getCriteriaBuilder() ;
 		CriteriaQuery<Q> criteriaQuery = builder.createQuery(queryClass);
 		Root<T> root = criteriaQuery.from(fromClass);
 		criteriaQuery = criteriaQuery.select((Selection<? extends Q>) root) ;
@@ -83,7 +83,7 @@ abstract class BaseSearchListBuilderImpl<T, Q, B extends BaseSearchListBuilder<T
 		else
 			criteriaQuery.distinct(true);
 		
-		TypedQuery<Q> query = manager.createQuery(criteriaQuery);
+		TypedQuery<Q> query = getManager().createQuery(criteriaQuery);
 		if(start != null && start > 0)
 			query.setFirstResult(start);
 		if(end != null && end > 0)
@@ -101,6 +101,18 @@ abstract class BaseSearchListBuilderImpl<T, Q, B extends BaseSearchListBuilder<T
 	Class<?> getFromClass() {
 		return fromClass;
 	}
+
+    protected EntityManager getManager() {
+        return this.manager;
+    }
+
+    public void setManager(EntityManager manager) {
+        this.manager = manager;
+    }
+
+    public Class<Q> getQueryClass() {
+        return this.queryClass;
+    }
 	
 	
 }

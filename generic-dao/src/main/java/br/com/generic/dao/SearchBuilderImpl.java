@@ -29,7 +29,7 @@ public class SearchBuilderImpl<T, Q> extends BaseSearchBuilderImpl< SearchBuilde
 	
 	@SuppressWarnings("unchecked")
 	public Q search(){
-		CriteriaBuilder builder = manager.getCriteriaBuilder() ;
+		CriteriaBuilder builder = getManager().getCriteriaBuilder() ;
 		CriteriaQuery<Q> criteriaQuery = builder.createQuery(queryClass);
 		Root<T> root = criteriaQuery.from(fromClass);
 		
@@ -43,7 +43,7 @@ public class SearchBuilderImpl<T, Q> extends BaseSearchBuilderImpl< SearchBuilde
 		if(field != null)
 			criteriaQuery = criteriaQuery.select(root.<Q>get(field));
 		
-		TypedQuery<Q> query = manager.createQuery(criteriaQuery);
+		TypedQuery<Q> query = getManager().createQuery(criteriaQuery);
 		
 		query.setFirstResult(0);
 		query.setMaxResults(2);
@@ -60,17 +60,42 @@ public class SearchBuilderImpl<T, Q> extends BaseSearchBuilderImpl< SearchBuilde
 			return list.get(0);
 		}
 	}
+
+
+
+    protected EntityManager getManager() {
+        return this.manager;
+    }
+
+
+
+    public void setManager(EntityManager manager) {
+        this.manager = manager;
+    }
+
+
+
+    public String getField() {
+        return this.field;
+    }
+
+
+
+    public void setField(String field) {
+        this.field = field;
+    }
+
+
+
+    public Class<Q> getQueryClass() {
+        return this.queryClass;
+    }
+
+
+
+    public Class<T> getFromClass() {
+        return this.fromClass;
+    }
 	
 	
-	public void setField(String field) {
-		this.field = field;
-	}
-
-
-
-	@Override
-	Class<?> getFromClass() {
-		return fromClass;
-	}
-
 }
