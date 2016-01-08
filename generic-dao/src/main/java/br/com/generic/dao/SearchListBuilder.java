@@ -1,12 +1,7 @@
 package br.com.generic.dao;
 
-import javax.persistence.EntityManager;
+public interface SearchListBuilder<T, Q> extends BaseSearchListBuilder<T, Q, SearchListBuilder<T, Q>> {
 
-public class SearchListBuilder<T, Q> extends BaseSearchListBuilder<T, Q, SearchListBuilder<T, Q>> {
-
-	public SearchListBuilder(EntityManager manager, Class<T> fromClass,
-			Class<Q> queryClass) {
-		super(manager, fromClass, queryClass);
-	}
+	
 
 }
