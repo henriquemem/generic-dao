@@ -4,7 +4,7 @@
 
 	<groupId>br.com.generic-dao</groupId>
 	<artifactId>generic-dao</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>generic-dao</name>

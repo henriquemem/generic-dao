@@ -1,5 +1,7 @@
 package br.com.generic.dao;
 
+import br.com.generic.dao.exception.NotPossibleCreateEntityException;
+
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
@@ -20,6 +22,18 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
     @SuppressWarnings("unchecked")
     private final Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
             .getActualTypeArguments()[0];
+
+    public T createModel(){
+        try {
+            return entityClass.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            throw new NotPossibleCreateEntityException(e);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            throw new NotPossibleCreateEntityException(e);
+        }
+    }
 
     @Override
     public T insert(T entity) {

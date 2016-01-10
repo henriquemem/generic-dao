@@ -13,6 +13,8 @@ public abstract interface GenericDAO<T> {
 
     public T disassociate(T entity);
 
+    public T createModel();
+
     public T findEntityById(long id);
 
     public List<T> list(int beginning, int end, String order);
