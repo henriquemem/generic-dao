@@ -15,6 +15,7 @@ import javax.persistence.criteria.Root;
  *
  * @author henrique
  */
+@SuppressWarnings("unchecked")
 public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
 
     private EntityManager manager;
@@ -123,6 +124,32 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
         SearchBuilder<T, E> searchBuilder = new SearchBuilderImpl<>(getEntityManager(), entityClass, parameterClass);
         searchBuilder.setField(field);
         return searchBuilder;
+    }
+
+
+    public <N extends Number> N max(String field){
+        return (N) getEntityManager().createQuery("select max(" + field + ") from " + entityClass.getSimpleName())
+                .getSingleResult();
+    }
+
+    public <N extends Number> N avg(String field){
+        return (N) getEntityManager().createQuery("select avg(" + field + ") from " + entityClass.getSimpleName())
+                .getSingleResult();
+    }
+
+    public <N extends Number> N min(String field){
+        return (N) getEntityManager().createQuery("select min(" + field + ") from " + entityClass.getSimpleName())
+                .getSingleResult();
+    }
+
+    public <N extends Number> N count(String field){
+        return (N) getEntityManager().createQuery("select count(" + field + ") from " + entityClass.getSimpleName())
+                .getSingleResult();
+    }
+
+    public <N extends Number> N sum(String field){
+        return (N) getEntityManager().createQuery("select max(" + field + ") from " + entityClass.getSimpleName())
+                .getSingleResult();
     }
 
     protected T consist(T entity) {

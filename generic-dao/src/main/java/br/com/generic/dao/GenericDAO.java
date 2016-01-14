@@ -26,5 +26,15 @@ public abstract interface GenericDAO<T> {
     public <E> SearchListBuilder<T, E> listProperties(String field);
 
     public<E> SearchBuilder<T, E> searchProperty(String field);
-    
+
+    public <N extends Number> N max(String field);
+
+    public <N extends Number> N avg(String field);
+
+    public <N extends Number> N min(String field);
+
+    public <N extends Number> N count(String field);
+
+    public <N extends Number> N sum(String field);
+
 }
