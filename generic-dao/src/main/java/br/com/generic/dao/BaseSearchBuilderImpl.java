@@ -85,6 +85,26 @@ public abstract class BaseSearchBuilderImpl<B extends BaseSearchBuilder<?>> impl
 		parameters.add(parameter);
 		return (B) this;	
 	}
+
+	@SuppressWarnings("unchecked")
+	public B notIn(String arg0, Collection<?> value){
+		Parameter parameter = new Parameter();
+		parameter.setProperty(arg0);
+		parameter.setPredicates(Predicates.NOT_IN);
+		parameter.setValue(value);
+		parameters.add(parameter);
+		return (B) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public B notIn(String arg0, Object... value){
+		Parameter parameter = new Parameter();
+		parameter.setProperty(arg0);
+		parameter.setPredicates(Predicates.NOT_IN);
+		parameter.setValue(value);
+		parameters.add(parameter);
+		return (B) this;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public B lessThanOrEqualTo(String arg0, Comparable<?> value){

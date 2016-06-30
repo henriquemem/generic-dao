@@ -17,6 +17,8 @@ public interface BaseSearchBuilder<B extends BaseSearchBuilder<?>> {
 	public B greaterThan(String arg0, Comparable<?> value);
 	public B in(String arg0, Collection<?> value);
 	public B in(String arg0, Object... value);
+	public B notIn(String arg0, Collection<?> value);
+	public B notIn(String arg0, Object... value);
 	public B lessThanOrEqualTo(String arg0, Comparable<?> value);
 	public B lessThan(String arg0, Comparable<?> value);
 	public B like(String arg0, String value);

@@ -5,21 +5,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import br.com.generic.dao.Parameter;
-import br.com.generic.dao.rules.BetweenRule;
-import br.com.generic.dao.rules.EqualRule;
-import br.com.generic.dao.rules.GreaterThanOrEqualToRule;
-import br.com.generic.dao.rules.GreaterThanRule;
-import br.com.generic.dao.rules.InRule;
-import br.com.generic.dao.rules.IsMemberRule;
-import br.com.generic.dao.rules.IsNotMemberRule;
-import br.com.generic.dao.rules.IsNotNullRule;
-import br.com.generic.dao.rules.IsNullRule;
-import br.com.generic.dao.rules.LessThanOrEqualToRule;
-import br.com.generic.dao.rules.LessThanRule;
-import br.com.generic.dao.rules.LikeRule;
-import br.com.generic.dao.rules.NotEqualRule;
-import br.com.generic.dao.rules.NotLikeRule;
-import br.com.generic.dao.rules.Rule;
+import br.com.generic.dao.rules.*;
 
 
 public enum Predicates implements Rule{
@@ -51,6 +37,13 @@ public enum Predicates implements Rule{
 		@Override
 		public <T> Predicate getPredicate(Class<?> entityClass, CriteriaBuilder builder, Root<T> root, Parameter parameter) {
 			return inRule.getPredicate(entityClass, builder, root, parameter);
+		}
+	},
+
+	NOT_IN{
+		@Override
+		public <T> Predicate getPredicate(Class<?> entityClass, CriteriaBuilder builder, Root<T> root, Parameter parameter) {
+			return notInRule.getPredicate(entityClass, builder, root, parameter);
 		}
 	},
 	
@@ -139,6 +132,7 @@ public enum Predicates implements Rule{
 	protected Rule greaterThanOrEqualToRule = new GreaterThanOrEqualToRule();
 	protected Rule lessThanOrEqualToRule = new LessThanOrEqualToRule();
 	protected Rule inRule = new InRule();
+	protected Rule notInRule = new NotInRule();
 	protected Rule greaterThanRule = new GreaterThanRule();
 	protected Rule lessThanRule = new LessThanRule();
 	protected Rule likeRule = new LikeRule();

@@ -4,7 +4,7 @@
 
 	<groupId>br.com.generic-dao</groupId>
 	<artifactId>generic-dao</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.8</version>
 	<packaging>jar</packaging>
 
 	<name>generic-dao</name>
@@ -43,44 +43,59 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>4.3.10.Final</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-osgi</artifactId>
 			<version>4.3.8.Final</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-envers</artifactId>
 			<version>4.3.8.Final</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
 			<version>4.3.8.Final</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-proxool</artifactId>
 			<version>4.3.8.Final</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-infinispan</artifactId>
 			<version>4.3.8.Final</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
 			<version>4.3.8.Final</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss</groupId>
 			<artifactId>jandex</artifactId>
 			<version>1.2.2.Final</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- <dependency> <groupId>org.jboss.weld</groupId> <artifactId>weld-core</artifactId> 
@@ -90,12 +105,14 @@
 			<groupId>org.jboss.weld.se</groupId>
 			<artifactId>weld-se-core</artifactId>
 			<version>2.2.15.Final</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.weld.se</groupId>
 			<artifactId>weld-se</artifactId>
 			<version>2.2.15.Final</version>
+			<scope>test</scope>
 		</dependency>
 
         <!-- JDBC drive -->
@@ -103,18 +120,21 @@
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.1-901-1.jdbc4</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.35</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
